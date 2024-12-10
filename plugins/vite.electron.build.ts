@@ -52,6 +52,10 @@ export const viteElectronBuild = (): Plugin => {
             allowElevation: true, //允许请求提升
             allowToChangeInstallationDirectory: true, //允许修改安装目录
           },
+          win: {
+            target: 'nsis',
+            icon: './public/Logo_Main_2108.ico', //图标
+          },
         },
       })
         .then(() => {

@@ -1,10 +1,12 @@
 import { app, BrowserWindow } from 'electron'
+import { createMenu } from '../main/ElectronMenu'
 
 // 等待Electron应用就绪后创建BrowserWindow窗口
 app.whenReady().then(async () => {
   const win = await new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
+    icon: '../public/Logo_Main_2108.ico',
 
     // 配置窗口的WebPreferences选项，用于控制渲染进程的行为
     webPreferences: {
@@ -13,6 +15,9 @@ app.whenReady().then(async () => {
       webSecurity: false, // 禁用web安全策略
     },
   })
+
+  // 设置菜单栏, win是窗口实例
+  createMenu(win)
 
   // 根据命令行参数加载URL或本地文件
   if (process.argv[2]) {

@@ -1,4 +1,4 @@
-import pluginVue, { rules } from 'eslint-plugin-vue'
+import pluginVue from 'eslint-plugin-vue'
 import vueTsEslintConfig from '@vue/eslint-config-typescript'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
@@ -19,6 +19,7 @@ export default [
   {
     rules: {
       '@typescript-eslint/no-var-requires': 'off', // 允许使用 require() 函数导入模块
+      '@typescript-eslint/no-explicit-any': 'off', // 允许使用 any 类型
     },
   },
 ]
