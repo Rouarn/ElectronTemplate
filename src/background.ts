@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-import { createMenu } from '../main/ElectronMenu'
+import { createMenu } from './electron/main/ElectronMenu'
 
 // 等待Electron应用就绪后创建BrowserWindow窗口
 app.whenReady().then(async () => {

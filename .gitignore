@@ -13,7 +13,7 @@ dist
 dist-ssr
 coverage
 *.local
-release
+dist_electron
 
 /cypress/videos/
 /cypress/screenshots/

@@ -42,7 +42,7 @@ export const viteElectronBuild = (): Plugin => {
           appId: 'com.example.app',
           productName: 'vite-electron',
           directories: {
-            output: path.join(process.cwd(), 'release'), //输出目录
+            output: path.join(process.cwd(), 'dist_electron'), //输出目录
             app: path.join(process.cwd(), 'dist'), //app目录
           },
           asar: true,
