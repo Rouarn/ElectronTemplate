@@ -3,7 +3,7 @@
   "appId": "com.electron.ee",
   "copyright": "© 2025 duola Technology Co., Ltd.",
   "directories": {
-    "output": "out"
+    "output": "public/out"
   },
   "asar": true,
   "files": [
@@ -13,7 +13,7 @@
     "!electron/",
     "!frontend/",
     "!logs/",
-    "!out/",
+    "!public/out/",
     "!go/",
     "!python/"
   ],
