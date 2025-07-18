@@ -1,1 +1,0 @@
-import{_ as n}from"./exception-base-BbxfpxL9.js";import{_ as t,bt as o,x as r}from"./index-BLlKnVia.js";import"./svg-icon-PjTFhywG.js";const _={};function c(a,i){const e=n;return r(),o(e,{type:"500"})}const m=t(_,[["render",c],["__file","D:/Entertainment/Rouran/PAG/AlibabaCloud/electron-template/frontend/src/views/_builtin/500/index.vue"]]);export{m as default};

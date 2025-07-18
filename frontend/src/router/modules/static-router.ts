@@ -10,7 +10,7 @@ export const staticRouter: RouteRecordRaw[] = [
     redirect: GlobalConfig.HOME_URL,
   },
   {
-    path: GlobalConfig.LOGIN_URL,
+    path: '/' + GlobalConfig.LOGIN_URL,
     name: 'login',
     component: () => import('@/views/_builtin/login/index.vue'),
     meta: {
@@ -26,7 +26,7 @@ export const staticRouter: RouteRecordRaw[] = [
     redirect: GlobalConfig.HOME_URL,
     children: [
       {
-        path: '/home',
+        path: '/' + GlobalConfig.HOME_URL,
         name: 'home',
         component: () => import('@/views/home/index.vue'),
         meta: {
