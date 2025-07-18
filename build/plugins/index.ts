@@ -1,6 +1,5 @@
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
-import { viteElectronBuild } from './vite.electron.build'
-import { viteElectronDev } from './vite.electron.dev'
+import { createElectronPlugin } from './vite.electron.plugin'
 import type { Env } from '@/typings/vite-env'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -81,8 +80,7 @@ export function setupVitePlugins(viteEnv: Env.ImportMeta, buildTime: string) {
       inject: 'body-last',
       customDomId: '__SVG_ICON_LOCAL__',
     }),
-    viteElectronDev(),
-    viteElectronBuild(),
+    createElectronPlugin(),
   ]
 
   return plugins

@@ -15,7 +15,6 @@
     "dev": "vite --mode development",
     "dev:prod": "vite --mode production",
     "build": "vite build --mode production",
-    "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "build-only": "vite build",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
