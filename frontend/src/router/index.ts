@@ -1,10 +1,11 @@
 import { createMemoryHistory, createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/modules/auth'
-// import { useRouteStore } from '@/stores/modules/route'
+import { useRouteStore } from '@/stores/modules/route'
 import { errorRouter, staticRouter } from './modules/static-router'
 import { GlobalConfig } from '@/enum'
 import { $t } from '@/locales'
 import { useTitle } from '@vueuse/core'
+import { routes } from 'vue-router/auto-routes'
 
 const mode = import.meta.env.VITE_ROUTER_MODE as 'hash' | 'history' | 'memory'
 
@@ -46,7 +47,7 @@ const router = createRouter({
  * */
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  // const routeStore = useRouteStore()
+  const routeStore = useRouteStore()
 
   console.log(router.getRoutes(), 'vueRoutes')
 
@@ -61,9 +62,9 @@ router.beforeEach(async (to, from, next) => {
   useTitle(documentTitle)
 
   // 3.初始化路由菜单 (提供给header菜单使用,路由使用的是基于文件自动生成的)
-  // if (!routeStore.isInitConstantRoute) {
-  //   await routeStore.initRoute()
-  // }
+  if (!routeStore.isInitConstantRoute) {
+    await routeStore.initRoute(routes)
+  }
 
   // 4.检查是否需要授权
   if (to.meta.isAuth) {

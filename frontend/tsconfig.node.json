@@ -12,7 +12,7 @@
       "~/*": ["./*"]
     },
     "resolveJsonModule": true,
-    "types": ["vite/client", "node", "naive-ui/volar"],
+    "types": ["vite/client", "node", "naive-ui/volar", "unplugin-vue-router/client"],
     "strict": true,
     "strictNullChecks": true,
     "noUnusedLocals": false,

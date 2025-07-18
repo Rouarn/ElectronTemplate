@@ -1,6 +1,5 @@
 import { useSvgIcon } from '@/hooks/common/icon'
 import { $t } from '@/locales'
-import type { LastLevelRouteKey, RouteKey, RouteMap } from '@elegant-router/types'
 import type { _RouteRecordBase, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
 
 /**
@@ -9,13 +8,13 @@ import type { _RouteRecordBase, RouteLocationNormalizedLoaded, RouteRecordRaw } 
  * @param routes Vue routes (two levels)
  */
 export function getCacheRouteNames(routes: RouteRecordRaw[]) {
-  const cacheNames: LastLevelRouteKey[] = []
+  const cacheNames: App.Global.RouteKey[] = []
 
   routes.forEach((route) => {
     // only get last two level route, which has component
     route.children?.forEach((child) => {
       if (child.component && child.meta?.keepAlive) {
-        cacheNames.push(child.name as LastLevelRouteKey)
+        cacheNames.push(child.name as App.Global.RouteKey)
       }
     })
   })
@@ -60,8 +59,8 @@ function getGlobalMenuByBaseRoute(route: RouteLocationNormalizedLoaded | RouteRe
     key: name as string,
     label,
     i18nKey,
-    routeKey: name as RouteKey,
-    routePath: path as RouteMap[RouteKey],
+    routeKey: name as App.Global.RouteKey,
+    routePath: path as App.Global.RoutePath,
     icon: SvgIconVNode({ icon, localIcon, fontSize: iconFontSize || 20 }),
   }
 

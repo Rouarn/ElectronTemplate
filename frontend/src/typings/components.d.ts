@@ -25,6 +25,7 @@ declare module 'vue' {
     IconUilSearch: typeof import('~icons/uil/search')['default']
     LangSwitch: typeof import('./../components/common/lang-switch.vue')['default']
     LookForward: typeof import('./../components/custom/look-forward.vue')['default']
+    NA: typeof import('naive-ui')['NA']
     NBackTop: typeof import('naive-ui')['NBackTop']
     NButton: typeof import('naive-ui')['NButton']
     NCheckbox: typeof import('naive-ui')['NCheckbox']
