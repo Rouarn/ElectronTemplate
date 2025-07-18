@@ -1,109 +1,43 @@
 {
-  "name": "electron-template",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "description": "一个基于Vue3、Vite7、TypeScript、NaiveUI and UnoCSS的清新优雅前台模版。",
-  "author": {
-    "name": "Rouarn",
-    "email": "woyuxiaji@foxmail.com",
-    "url": "https://github.com/Rouarn"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/Rouarn/Electron-template",
+  "name": "ee",
+  "version": "4.1.0",
+  "description": "A fast, desktop software development framework",
+  "main": "./public/electron/main.js",
   "scripts": {
-    "dev": "vite --mode development",
-    "dev:prod": "vite --mode production",
-    "build": "vite build --mode production",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck",
-    "lint:eslint": "eslint . --fix",
-    "lint:prettier": "prettier --write src/",
-    "prepare": "husky",
-    "lint:lint-staged": "lint-staged",
-    "commit": "cz-git commit"
+    "dev": "ee-bin dev",
+    "build": "npm run build-frontend && npm run build-electron && ee-bin encrypt",
+    "start": "ee-bin start",
+    "dev-frontend": "ee-bin dev --serve=frontend",
+    "dev-electron": "ee-bin dev --serve=electron",
+    "build-frontend": "ee-bin build --cmds=frontend && ee-bin move --flag=frontend_dist",
+    "build-electron": "ee-bin build --cmds=electron",
+    "encrypt": "ee-bin encrypt",
+    "icon": "ee-bin icon",
+    "re-sqlite": "electron-rebuild -f -w better-sqlite3",
+    "build-w": "ee-bin build --cmds=win64",
+    "build-we": "ee-bin build --cmds=win_e",
+    "build-m": "ee-bin build --cmds=mac",
+    "build-m-arm64": "ee-bin build --cmds=mac_arm64",
+    "build-l": "ee-bin build --cmds=linux"
+  },
+  "repository": "https://github.com/dromara/electron-egg.git",
+  "keywords": [
+    "Electron",
+    "electron-egg",
+    "ElectronEgg"
+  ],
+  "author": "哆啦好梦, Inc <530353222@qq.com>",
+  "license": "Apache",
+  "devDependencies": {
+    "@electron/rebuild": "^3.7.1",
+    "@types/node": "^20.16.0",
+    "debug": "^4.4.0",
+    "ee-bin": "^4.1.10",
+    "electron": "^31.7.6",
+    "electron-builder": "^25.1.8"
   },
   "dependencies": {
-    "@iconify/vue": "^5.0.0",
-    "@types/qs": "^6.14.0",
-    "@vueuse/core": "^13.5.0",
-    "axios": "^1.10.0",
-    "colord": "^2.9.3",
-    "consola": "^3.4.2",
-    "dayjs": "^1.11.13",
-    "defu": "^6.1.4",
-    "klona": "^2.0.6",
-    "localforage": "^1.10.0",
-    "naive-ui": "^2.42.0",
-    "nprogress": "^0.2.0",
-    "pinia": "^3.0.3",
-    "qs": "^6.14.0",
-    "vfonts": "^0.0.3",
-    "vue": "^3.5.17",
-    "vue-i18n": "^11.1.9",
-    "vue-router": "^4.5.1"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@iconify/json": "^2.2.357",
-    "@iconify/utils": "^2.3.0",
-    "@tsconfig/node22": "^22.0.2",
-    "@types/axios": "^0.14.4",
-    "@types/node": "^22.16.3",
-    "@types/nprogress": "^0.2.3",
-    "@vitejs/plugin-vue": "^5.2.4",
-    "@vitejs/plugin-vue-jsx": "^4.2.0",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.6.0",
-    "@vue/tsconfig": "^0.7.0",
-    "commitizen": "^4.3.1",
-    "consola": "3.4.2",
-    "cz-git": "^1.12.0",
-    "electron": "^37.2.3",
-    "electron-builder": "^26.0.12",
-    "esbuild": "^0.25.6",
-    "eslint": "^9.30.1",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-vue": "~10.0.1",
-    "husky": "^9.1.7",
-    "jiti": "^2.4.2",
-    "kolorist": "^1.8.0",
-    "lint-staged": "^16.1.2",
-    "npm-run-all2": "^7.0.2",
-    "prettier": "^3.6.2",
-    "sass-embedded": "^1.89.2",
-    "typescript": "~5.8.3",
-    "unocss": "^66.3.3",
-    "unplugin-auto-import": "^19.3.0",
-    "unplugin-icons": "22.1.0",
-    "unplugin-vue-components": "^28.8.0",
-    "vite": "^6.3.5",
-    "vite-plugin-pages": "^0.33.1",
-    "vite-plugin-progress": "^0.0.7",
-    "vite-plugin-svg-icons": "2.0.1",
-    "vite-plugin-vue-devtools": "^7.7.7",
-    "vue-tsc": "^2.2.12"
-  },
-  "lint-staged": {
-    "*.{js,ts,vue}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{cjs,json}": [
-      "prettier --write"
-    ],
-    "*.{vue,html}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{less,css}": [
-      "prettier --write"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
-  },
-  "website": "http://www.shixian.xyz"
+    "ee-core": "^4.1.5",
+    "electron-updater": "^6.3.8"
+  }
 }
