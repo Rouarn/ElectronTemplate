@@ -5,7 +5,6 @@ import { errorRouter, staticRouter } from './modules/static-router'
 import { GlobalConfig } from '@/enum'
 import { $t } from '@/locales'
 import { useTitle } from '@vueuse/core'
-import { routes } from 'vue-router/auto-routes'
 
 const mode = import.meta.env.VITE_ROUTER_MODE as 'hash' | 'history' | 'memory'
 
@@ -49,8 +48,6 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   const routeStore = useRouteStore()
 
-  console.log(router.getRoutes(), 'vueRoutes')
-
   // 1.NProgress 开始
   window.NProgress?.start?.()
 
@@ -63,7 +60,7 @@ router.beforeEach(async (to, from, next) => {
 
   // 3.初始化路由菜单 (提供给header菜单使用,路由使用的是基于文件自动生成的)
   if (!routeStore.isInitConstantRoute) {
-    await routeStore.initRoute(routes)
+    // await routeStore.initRoute()
   }
 
   // 4.检查是否需要授权

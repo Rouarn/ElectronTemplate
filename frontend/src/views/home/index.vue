@@ -1,12 +1,5 @@
 <script setup lang="ts">
 import welcome from '@/assets/images/welcome.png'
-
-definePage({
-  meta: {
-    title: '欢迎',
-    i18nKey: 'welcome',
-  },
-})
 </script>
 
 <template>
