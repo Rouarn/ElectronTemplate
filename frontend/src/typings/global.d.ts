@@ -14,6 +14,8 @@ declare global {
     $notification?: import('naive-ui').NotificationProviderInst
     /** Theme instance */
     $loading?: import('@/plugins/loading').LoadingProviderInst
+    /** Electron instance */
+    electron?: typeof import('electron')
   }
 
   /** Build time of the project */

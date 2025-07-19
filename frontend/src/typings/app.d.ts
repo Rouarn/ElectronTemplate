@@ -78,40 +78,6 @@ declare namespace App {
     }
   }
 
-  /** Global namespace */
-  namespace Global {
-    type RouteKey = string
-    type RoutePath = string
-
-    /** The router push options */
-    type RouterPushOptions = {
-      query?: Record<string, string>
-      params?: Record<string, string>
-    }
-
-    /** The global menu */
-    type Menu = {
-      /**
-       * The menu key
-       *
-       * Equal to the route key
-       */
-      key: string
-      /** The menu label */
-      label: string
-      /** The menu i18n key */
-      i18nKey?: I18n.I18nKey | null
-      /** The route key */
-      routeKey: RouteKey
-      /** The route path */
-      routePath: RoutePath
-      /** The menu icon */
-      icon?: () => VNode
-      /** The menu children */
-      children?: Menu[]
-    }
-  }
-
   /**
    * I18n namespace
    *
@@ -237,6 +203,40 @@ declare namespace App {
       (key: I18nKey, named: Record<string, unknown>, options?: TranslateOptions<LangType>): string
       (key: I18nKey, named: Record<string, unknown>, plural: number): string
       (key: I18nKey, named: Record<string, unknown>, defaultMsg: string): string
+    }
+  }
+
+  /** Global namespace */
+  namespace Global {
+    type RouteKey = string
+    type RoutePath = string
+
+    /** The router push options */
+    type RouterPushOptions = {
+      query?: Record<string, string>
+      params?: Record<string, string>
+    }
+
+    /** The global menu */
+    type Menu = {
+      /**
+       * The menu key
+       *
+       * Equal to the route key
+       */
+      key: string
+      /** The menu label */
+      label: string
+      /** The menu i18n key */
+      i18nKey?: I18n.I18nKey | null
+      /** The route key */
+      routeKey: RouteKey
+      /** The route path */
+      routePath: RoutePath
+      /** The menu icon */
+      icon?: () => VNode
+      /** The menu children */
+      children?: Menu[]
     }
   }
 
