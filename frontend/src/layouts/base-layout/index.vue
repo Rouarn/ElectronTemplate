@@ -8,17 +8,18 @@ defineOptions({
   name: 'BaseLayout',
 })
 
-const handleBackTop = (_isTop: boolean) => {}
+const isTop = ref(true)
+const handleBackTop = (_isTop: boolean) => {
+  isTop.value = _isTop
+}
 </script>
 
 <template>
-  <NFlex vertical class="size-full" :size="0">
-    <GlobalHeader />
-    <GlobalContent />
-    <GlobalFooter />
-    <ThemeDrawer />
-    <NBackTop :right="100" class="z-3" @update:show="handleBackTop" />
-  </NFlex>
+  <GlobalHeader />
+  <GlobalContent />
+  <GlobalFooter :is-top="isTop" />
+  <ThemeDrawer />
+  <NBackTop :right="100" class="z-3" @update:show="handleBackTop" />
 </template>
 
 <style scoped></style>
