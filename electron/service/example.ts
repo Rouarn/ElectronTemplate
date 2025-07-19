@@ -1,30 +1,21 @@
-'use strict';
+import { logger } from 'ee-core/log';
 
-const { logger } = require('ee-core/log');
-
-/**
- * 示例服务
- * @class
- */
+// example service
 class ExampleService {
 
-  /**
-   * test
-   */
-  async test(args) {
+  async test(args: any): Promise<{ status: string; params: any }> {
     let obj = {
       status:'ok',
       params: args
     }
-
     logger.info('ExampleService obj:', obj);
-
     return obj;
   }
 }
 ExampleService.toString = () => '[class ExampleService]';
+const exampleService = new ExampleService();
 
-module.exports = {
+export {
   ExampleService,
-  exampleService: new ExampleService()
+  exampleService
 };

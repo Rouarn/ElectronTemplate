@@ -1,12 +1,8 @@
-"use strict";
+import path from "path";
+import { getBaseDir } from "ee-core/ps";
+import { type AppConfig } from "ee-core/config";
 
-const path = require("path");
-const { getBaseDir } = require("ee-core/ps");
-
-/**
- * 默认配置
- */
-module.exports = () => {
+const config: () => AppConfig = () => {
   return {
     openDevTools: false,
     singleLock: true,
@@ -17,13 +13,11 @@ module.exports = () => {
       minWidth: 400,
       minHeight: 300,
       webPreferences: {
-        //webSecurity: false,
-        contextIsolation: false, // false -> 可在渲染进程中使用electron的api，true->需要bridge.js(contextBridge)
+        contextIsolation: false,
         nodeIntegration: true,
-        //preload: path.join(getElectronDir(), 'preload', 'bridge.js'),
       },
       frame: true,
-      show: true,
+      show: false,
       icon: path.join(getBaseDir(), "public", "images", "logo-32.png"),
     },
     logger: {
@@ -38,7 +32,7 @@ module.exports = () => {
       url: "http://electron-egg.kaka996.com/",
     },
     socketServer: {
-      enable: false,
+      enable: true,
       port: 7070,
       path: "/socket.io/",
       connectTimeout: 45000,
@@ -52,7 +46,7 @@ module.exports = () => {
       channel: "socket-channel",
     },
     httpServer: {
-      enable: false,
+      enable: true,
       https: {
         enable: false,
         key: "/public/ssl/localhost+1.key",
@@ -63,7 +57,8 @@ module.exports = () => {
     },
     mainServer: {
       indexPath: "/public/dist/index.html",
-      channelSeparator: "/",
     },
   };
 };
+
+export default config;
