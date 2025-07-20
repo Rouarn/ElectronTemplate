@@ -27,4 +27,4 @@ const ipc = Renderer.ipcRenderer || undefined
  */
 const isEE = ipc ? true : false
 
-export { ipc, isEE,Renderer }
+export { ipc, isEE, Renderer }

@@ -44,7 +44,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
 
     window.$notification?.success({
       title: '登录成功',
-      content: `欢迎回来：${  userInfo.userName}`,
+      content: `欢迎回来：${userInfo.userName}`,
       duration: 4500,
     })
   }

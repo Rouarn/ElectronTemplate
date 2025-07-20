@@ -19,7 +19,7 @@ export const staticRouter: RouteRecordRaw[] = [
     component: () => import('@/views/_builtin/login/index.vue'),
     meta: {
       title: '登录',
-      i18nKey: 'route.Login',
+      i18nKey: 'route.login',
     },
   },
   {
@@ -35,7 +35,7 @@ export const staticRouter: RouteRecordRaw[] = [
         component: () => import('@/views/home/index.vue'),
         meta: {
           title: '首页',
-          i18nKey: 'route.Home',
+          i18nKey: 'route.home',
         },
       },
     ],

@@ -1,6 +1,6 @@
 {
-  "productName": "ee",
-  "appId": "com.bilibili.ee",
+  "productName": "electron-template",
+  "appId": "com.bilibili.template",
   "copyright": "© 2025 duola Technology Co., Ltd.",
   "directories": {
     "output": "out"

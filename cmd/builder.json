@@ -1,6 +1,6 @@
 {
-  "productName": "ee",
-  "appId": "com.electron.ee",
+  "productName": "electron-template",
+  "appId": "com.electron.template",
   "copyright": "© 2025 duola Technology Co., Ltd.",
   "directories": {
     "output": "public/out"
@@ -30,7 +30,7 @@
     "installerHeaderIcon": "build/icons/icon.ico",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "ee"
+    "shortcutName": "electron-template"
   },
   "publish": [
     {
