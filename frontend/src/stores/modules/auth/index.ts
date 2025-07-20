@@ -28,7 +28,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
   }
 
   const setUserInfo = (value: Api.Auth.UserInfo) => {
-    value = Object.assign(userInfo, value)
+    Object.assign(userInfo, value)
   }
 
   /**
