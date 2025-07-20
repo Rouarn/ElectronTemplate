@@ -1,6 +1,7 @@
 import { ElectronEgg } from "ee-core";
 import { Lifecycle } from "./preload/lifecycle";
 import { preload } from "./preload";
+import { createMenu } from "./main/ElectronMenu";
 
 // New app
 const app = new ElectronEgg();
@@ -13,7 +14,10 @@ app.register("window-ready", life.windowReady);
 app.register("before-close", life.beforeClose);
 
 // Register preload
-app.register("preload", preload);
+app.register("preload", (win: Electron.CrossProcessExports.BrowserWindow) => {
+  preload();
+  createMenu(win);
+});
 
 // Run
 app.run();
