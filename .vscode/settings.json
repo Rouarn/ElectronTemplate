@@ -17,5 +17,11 @@
   "i18n-ally.enabledFrameworks": ["vue"],
   "i18n-ally.editor.preferEditor": true,
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.localesPaths": ["frontend/src/locales/langs"]
+  "i18n-ally.localesPaths": ["frontend/src/locales/langs"],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto",
+      "cwd": "frontend"
+    }
+  ]
 }
