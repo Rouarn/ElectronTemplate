@@ -6,7 +6,7 @@
       "name": "home",
       "component": "/home/index",
       "meta": {
-        "icon": "HomeFilled",
+        "icon": "carbon:home",
         "title": "首页",
         "isLink": "",
         "isHide": false,
@@ -21,7 +21,7 @@
       "name": "directives",
       "redirect": "/directives/copyDirect",
       "meta": {
-        "icon": "Stamp",
+        "icon": "carbon:tools",
         "title": "自定义指令",
         "isLink": "",
         "isHide": false,
@@ -36,7 +36,7 @@
           "name": "copyDirect",
           "component": "/directives/copyDirect/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "carbon:copy",
             "title": "复制指令",
             "isLink": "",
             "isHide": false,
@@ -51,7 +51,7 @@
           "name": "watermarkDirect",
           "component": "/directives/watermarkDirect/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "material-symbols:branding-watermark-outline",
             "title": "水印指令",
             "isLink": "",
             "isHide": false,
@@ -66,7 +66,7 @@
           "name": "dragDirect",
           "component": "/directives/dragDirect/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "carbon:drag-vertical",
             "title": "拖拽指令",
             "isLink": "",
             "isHide": false,
@@ -81,7 +81,7 @@
           "name": "debounceDirect",
           "component": "/directives/debounceDirect/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "carbon:timer",
             "title": "防抖指令",
             "isLink": "",
             "isHide": false,
@@ -96,7 +96,7 @@
           "name": "throttleDirect",
           "component": "/directives/throttleDirect/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "simple-icons:carthrottle",
             "title": "节流指令",
             "isLink": "",
             "isHide": false,
@@ -111,7 +111,7 @@
           "name": "longpressDirect",
           "component": "/directives/longpressDirect/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "carbon:time",
             "title": "长按指令",
             "isLink": "",
             "isHide": false,
@@ -128,7 +128,7 @@
       "name": "link",
       "redirect": "/link/bing",
       "meta": {
-        "icon": "Paperclip",
+        "icon": "carbon:link",
         "title": "外部链接",
         "isLink": "",
         "isHide": false,
@@ -143,7 +143,7 @@
           "name": "bing",
           "component": "/link/bing/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "simple-icons:microsoftbing",
             "title": "Bing 内嵌",
             "isLink": "",
             "isHide": false,
@@ -158,7 +158,7 @@
           "name": "gitee",
           "component": "/link/gitee/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "simple-icons:gitee",
             "title": "Gitee 仓库",
             "isLink": "https://gitee.com/HalseySpicy/Geeker-Admin",
             "isHide": false,
@@ -173,7 +173,7 @@
           "name": "github",
           "component": "/link/github/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "carbon:logo-github",
             "title": "GitHub 仓库",
             "isLink": "https://github.com/HalseySpicy/Geeker-Admin",
             "isHide": false,
@@ -188,7 +188,7 @@
           "name": "docs",
           "component": "/link/docs/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "carbon:book",
             "title": "项目文档",
             "isLink": "https://docs.spicyboy.cn",
             "isHide": false,
@@ -203,7 +203,7 @@
           "name": "juejin",
           "component": "/link/juejin/index",
           "meta": {
-            "icon": "Menu",
+            "icon": "simple-icons:juejin",
             "title": "掘金主页",
             "isLink": "https://juejin.cn/user/3263814531551816/posts",
             "isHide": false,
@@ -220,7 +220,7 @@
       "name": "about",
       "component": "/about/index",
       "meta": {
-        "icon": "InfoFilled",
+        "icon": "carbon:information",
         "title": "关于项目",
         "isLink": "",
         "isHide": false,
@@ -235,7 +235,7 @@
       "name": "userCenter",
       "component": "/user-center/index",
       "meta": {
-        "icon": "userCenter",
+        "icon": "carbon:user-avatar-filled",
         "title": "用户中心",
         "isLink": "",
         "isHide": false,
