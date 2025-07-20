@@ -1,12 +1,12 @@
+import router from '@/router'
 import { localStg } from '@/utils/storage'
+import { useRouteStore } from '../route'
 import { SetupStoreId } from '@/enum'
 import useBoolean from '@/hooks/common/use-boolean'
 import { $t, setLocale } from '@/locales'
+import { setDayjsLocale } from '@/locales/dayjs'
 import { breakpointsTailwind, useBreakpoints, useTitle } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { useRouteStore } from '../route'
-import { setDayjsLocale } from '@/locales/dayjs'
-import router from '@/router'
 
 export const useAppStore = defineStore(SetupStoreId.App, () => {
   const routeStore = useRouteStore()

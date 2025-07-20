@@ -4,9 +4,9 @@ import { useRouteStore } from '@/stores/modules/route'
 import { errorRouter, staticRouter } from './modules/static-router'
 import { GlobalConfig } from '@/enum'
 import { $t } from '@/locales'
+import type { Env } from '@/typings/vite-env'
 import { useTitle } from '@vueuse/core'
 import type { RouterHistory } from 'vue-router'
-import { Env } from '@/typings/vite-env'
 
 const { VITE_ROUTER_HISTORY_MODE = 'history', VITE_BASE_URL } = import.meta.env
 
