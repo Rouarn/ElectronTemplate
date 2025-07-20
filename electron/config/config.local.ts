@@ -2,9 +2,8 @@ import { type AppConfig } from "ee-core/config";
 
 const config: () => AppConfig = () => {
   return {
-    openDevTools: {
-      mode: "right",
-    },
+    // { mode: 'left' | 'top' | 'right' | 'bottom' | 'none' }
+    openDevTools: false,
     jobs: {
       messageLog: false,
     },
