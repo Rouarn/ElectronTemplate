@@ -50,7 +50,7 @@ export function useRouterPush(inSetup = true) {
   }
 
   async function toHome() {
-    return routerPushByKey(GlobalConfig.HOME_URL as unknown as App.Global.RouteKey)
+    return routerPushByKey('root')
   }
 
   /**

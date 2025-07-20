@@ -5,13 +5,15 @@ import { errorRouter, staticRouter } from './modules/static-router'
 import { GlobalConfig } from '@/enum'
 import { $t } from '@/locales'
 import { useTitle } from '@vueuse/core'
+import type { RouterHistory } from 'vue-router'
+import { Env } from '@/typings/vite-env'
 
-const mode = import.meta.env.VITE_ROUTER_MODE as 'hash' | 'history' | 'memory'
+const { VITE_ROUTER_HISTORY_MODE = 'history', VITE_BASE_URL } = import.meta.env
 
-const routerMode = {
-  hash: () => createWebHashHistory(),
-  history: () => createWebHistory(),
-  memory: () => createMemoryHistory(),
+const historyCreatorMap: Record<Env.RouterHistoryMode, (base?: string) => RouterHistory> = {
+  hash: createWebHashHistory,
+  history: createWebHistory,
+  memory: createMemoryHistory,
 }
 
 /**
@@ -35,7 +37,7 @@ const routerMode = {
  * @param meta.query ==> 路由的查询参数
  * */
 const router = createRouter({
-  history: routerMode[mode](),
+  history: historyCreatorMap[VITE_ROUTER_HISTORY_MODE as keyof typeof historyCreatorMap]?.(VITE_BASE_URL),
   routes: [...staticRouter, ...errorRouter],
   strict: false,
   scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -60,7 +62,8 @@ router.beforeEach(async (to, from, next) => {
 
   // 3.初始化路由菜单 (提供给header菜单使用,路由使用的是基于文件自动生成的)
   if (!routeStore.isInitConstantRoute) {
-    // await routeStore.initRoute()
+    await routeStore.initRoute()
+    return next({ ...to, replace: true })
   }
 
   // 4.检查是否需要授权

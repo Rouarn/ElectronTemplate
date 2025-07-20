@@ -142,6 +142,7 @@ export default defineConfigWithVueTs(
       'vue/no-v-html': 'error', // 禁止使用 v-html
       'vue/require-default-prop': 'off', // 此规则要求为每个 prop 为必填时，必须提供默认值
       'vue/no-setup-props-destructure': 'off', // 禁止解构 props 传递给 setup
+      'prefer-template': 'error', // 优先使用模板字符串
     },
   },
 )

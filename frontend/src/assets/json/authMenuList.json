@@ -1,0 +1,220 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "path": "/home",
+      "name": "home",
+      "component": "/home/index",
+      "meta": {
+        "icon": "HomeFilled",
+        "title": "首页",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": true,
+        "isKeepAlive": true
+      }
+    },
+    {
+      "path": "/directives",
+      "name": "directives",
+      "redirect": "/directives/copyDirect",
+      "meta": {
+        "icon": "Stamp",
+        "title": "自定义指令",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      },
+      "children": [
+        {
+          "path": "/directives/copyDirect",
+          "name": "copyDirect",
+          "component": "/directives/copyDirect/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "复制指令",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/directives/watermarkDirect",
+          "name": "watermarkDirect",
+          "component": "/directives/watermarkDirect/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "水印指令",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/directives/dragDirect",
+          "name": "dragDirect",
+          "component": "/directives/dragDirect/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "拖拽指令",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/directives/debounceDirect",
+          "name": "debounceDirect",
+          "component": "/directives/debounceDirect/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "防抖指令",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/directives/throttleDirect",
+          "name": "throttleDirect",
+          "component": "/directives/throttleDirect/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "节流指令",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/directives/longpressDirect",
+          "name": "longpressDirect",
+          "component": "/directives/longpressDirect/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "长按指令",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        }
+      ]
+    },
+    {
+      "path": "/link",
+      "name": "link",
+      "redirect": "/link/bing",
+      "meta": {
+        "icon": "Paperclip",
+        "title": "外部链接",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      },
+      "children": [
+        {
+          "path": "/link/bing",
+          "name": "bing",
+          "component": "/link/bing/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "Bing 内嵌",
+            "isLink": "",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/link/gitee",
+          "name": "gitee",
+          "component": "/link/gitee/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "Gitee 仓库",
+            "isLink": "https://gitee.com/HalseySpicy/Geeker-Admin",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/link/github",
+          "name": "github",
+          "component": "/link/github/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "GitHub 仓库",
+            "isLink": "https://github.com/HalseySpicy/Geeker-Admin",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/link/docs",
+          "name": "docs",
+          "component": "/link/docs/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "项目文档",
+            "isLink": "https://docs.spicyboy.cn",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        },
+        {
+          "path": "/link/juejin",
+          "name": "juejin",
+          "component": "/link/juejin/index",
+          "meta": {
+            "icon": "Menu",
+            "title": "掘金主页",
+            "isLink": "https://juejin.cn/user/3263814531551816/posts",
+            "isHide": false,
+            "isFull": false,
+            "isAffix": false,
+            "isKeepAlive": true
+          }
+        }
+      ]
+    },
+    {
+      "path": "/about/index",
+      "name": "about",
+      "component": "/about/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "关于项目",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    }
+  ],
+  "msg": "成功"
+}

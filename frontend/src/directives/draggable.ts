@@ -32,8 +32,8 @@ const draggable: Directive = {
         } else if (y > maxY) {
           y = maxY
         }
-        el.style.left = x + 'px'
-        el.style.top = y + 'px'
+        el.style.left = `${x  }px`
+        el.style.top = `${y  }px`
       }
       document.onmouseup = function () {
         document.onmousemove = document.onmouseup = null

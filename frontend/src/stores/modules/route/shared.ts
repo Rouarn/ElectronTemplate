@@ -1,19 +1,19 @@
 import { useSvgIcon } from '@/hooks/common/icon'
 import { $t } from '@/locales'
-import type { _RouteRecordBase, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
+import type { _RouteRecordBase } from 'vue-router'
 
 /**
  * Get cache route names
  *
  * @param routes Vue routes (two levels)
  */
-export function getCacheRouteNames(routes: RouteRecordRaw[]) {
+export function getCacheRouteNames(routes: Api.Route.UserRoute[]) {
   const cacheNames: App.Global.RouteKey[] = []
 
   routes.forEach((route) => {
     // only get last two level route, which has component
     route.children?.forEach((child) => {
-      if (child.component && child.meta?.keepAlive) {
+      if (child.component && child.meta?.isKeepAlive) {
         cacheNames.push(child.name as App.Global.RouteKey)
       }
     })
@@ -46,8 +46,7 @@ export function transformMenuToSearchMenus(menus: App.Global.Menu[], treeMap: Ap
  *
  * @param route
  */
-function getGlobalMenuByBaseRoute(route: RouteLocationNormalizedLoaded | RouteRecordRaw) {
-  console.log('route: ', route)
+function getGlobalMenuByBaseRoute(route: Api.Route.UserRoute) {
   const { SvgIconVNode } = useSvgIcon()
 
   const { name, path } = route
@@ -72,7 +71,7 @@ function getGlobalMenuByBaseRoute(route: RouteLocationNormalizedLoaded | RouteRe
  *
  * @param routes Auth routes
  */
-export function getGlobalMenusByRoutes(routes: RouteRecordRaw[]) {
+export function getGlobalMenusByRoutes(routes: Api.Route.UserRoute[]) {
   const menus: App.Global.Menu[] = []
 
   routes.forEach((route) => {

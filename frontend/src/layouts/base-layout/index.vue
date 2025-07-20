@@ -15,11 +15,13 @@ const handleBackTop = (_isTop: boolean) => {
 </script>
 
 <template>
-  <GlobalHeader />
-  <GlobalContent />
-  <GlobalFooter :is-top="isTop" />
-  <ThemeDrawer />
-  <NBackTop :right="100" class="z-3" @update:show="handleBackTop" />
+  <div class="flex flex-col h-full">
+    <GlobalHeader />
+    <GlobalContent />
+    <GlobalFooter :is-top="isTop" />
+    <ThemeDrawer />
+    <NBackTop :right="100" class="z-3" @update:show="handleBackTop" />
+  </div>
 </template>
 
 <style scoped></style>
