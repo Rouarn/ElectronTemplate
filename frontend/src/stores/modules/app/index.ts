@@ -48,6 +48,10 @@ export const useAppStore = defineStore(SetupStoreId.App, () => {
     useTitle(documentTitle)
   }
 
+  function init() {
+    setDayjsLocale(locale.value)
+  }
+
   /**
    * Reload page
    *
@@ -82,6 +86,9 @@ export const useAppStore = defineStore(SetupStoreId.App, () => {
   onScopeDispose(() => {
     scope.stop()
   })
+
+  // init
+  init()
 
   return {
     isMobile,
