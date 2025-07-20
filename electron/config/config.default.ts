@@ -29,7 +29,7 @@ const config: () => AppConfig = () => {
     },
     remote: {
       enable: false,
-      url: "http://electron-egg.kaka996.com/",
+      url: "https://github.com/Rouarn/Electron-template",
     },
     socketServer: {
       enable: true,

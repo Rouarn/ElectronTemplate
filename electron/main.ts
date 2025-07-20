@@ -1,6 +1,6 @@
-import { ElectronEgg } from 'ee-core';
-import { Lifecycle } from './preload/lifecycle';
-import { preload } from './preload';
+import { ElectronEgg } from "ee-core";
+import { Lifecycle } from "./preload/lifecycle";
+import { preload } from "./preload";
 
 // New app
 const app = new ElectronEgg();
