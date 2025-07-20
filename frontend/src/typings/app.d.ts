@@ -129,25 +129,24 @@ declare namespace App {
         themeDrawerTitle: string
       }
       route: {
-        Home: string
-        Login: string
-        Link: string
-        About: string
-        NotFound: string
-        UserCenter: string
-        Directives: string
-        DirectivesCopyDirect: string
-        DirectivesDebounceDirect: string
-        DirectivesDragDirect: string
-        DirectivesLongpressDirect: string
-        DirectivesThrottleDirect: string
-        DirectivesWatermarkDirect: string
-        LinkBing: string
-        LinkDocs: string
-        LinkGitee: string
-        LinkGithub: string
-        LinkJuejin: string
-        LinkUser: string
+        home: string
+        login: string
+        link: string
+        about: string
+        notFound: string
+        userCenter: string
+        directives: string
+        copyDirect: string
+        debounceDirect: string
+        dragDirect: string
+        longpressDirect: string
+        throttleDirect: string
+        watermarkDirect: string
+        bing: string
+        docs: string
+        gitee: string
+        github: string
+        juejin: string
       }
       page: {
         about: {
@@ -208,8 +207,10 @@ declare namespace App {
 
   /** Global namespace */
   namespace Global {
-    type RouteKey = string
-    type RoutePath = string
+    type AddSlash<T extends string> = T extends 'root' ? '/' : `/${T}`
+
+    type RouteKey = keyof I18n.Schema['route'] | 'root'
+    type RoutePath = AddSlash<App.Global.RouteKey>
 
     /** The router push options */
     type RouterPushOptions = {

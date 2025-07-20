@@ -1,6 +1,6 @@
 import { initDynamicRouter } from '@/router/modules/dynamicRouter'
 import { fetchAuthMenuListApi } from '@/service/api/login'
-import { getCacheRouteNames, getGlobalMenusByRoutes, transformMenuToSearchMenus } from './shared'
+import { getCacheRouteNames, getGlobalMenusByRoutes, transformMenuToSearchMenus, updateLocaleOfGlobalMenus } from './shared'
 import { SetupStoreId } from '@/enum'
 import useBoolean from '@/hooks/common/use-boolean'
 import { defineStore } from 'pinia'
@@ -15,6 +15,11 @@ export const useRouteStore = defineStore(SetupStoreId.Route, () => {
   /** Get global menus */
   function getGlobalMenus(routes: Api.Route.UserRoute[]) {
     menus.value = getGlobalMenusByRoutes(routes)
+  }
+
+  /** Update global menus by locale */
+  function updateGlobalMenusByLocale() {
+    menus.value = updateLocaleOfGlobalMenus(menus.value)
   }
 
   /** Cache routes */
@@ -35,11 +40,13 @@ export const useRouteStore = defineStore(SetupStoreId.Route, () => {
 
     const { data } = await fetchAuthMenuListApi()
 
-    initDynamicRouter(data)
+    const t = data as Api.Route.UserRoute[]
 
-    getGlobalMenus(data)
+    initDynamicRouter(t)
 
-    getCacheRoutes(data)
+    getGlobalMenus(t)
+
+    getCacheRoutes(t)
 
     setIsInitConstantRoute(true)
   }
@@ -51,5 +58,6 @@ export const useRouteStore = defineStore(SetupStoreId.Route, () => {
     isInitConstantRoute,
     initRoute,
     getGlobalMenus,
+    updateGlobalMenusByLocale,
   }
 })

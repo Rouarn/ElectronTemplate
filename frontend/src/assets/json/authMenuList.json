@@ -12,7 +12,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": true,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "i18nKey": "route.home"
       }
     },
     {
@@ -26,7 +27,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "i18nKey": "route.directives"
       },
       "children": [
         {
@@ -40,7 +42,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.copyDirect"
           }
         },
         {
@@ -54,7 +57,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.watermarkDirect"
           }
         },
         {
@@ -68,7 +72,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.dragDirect"
           }
         },
         {
@@ -82,7 +87,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.debounceDirect"
           }
         },
         {
@@ -96,7 +102,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.throttleDirect"
           }
         },
         {
@@ -110,7 +117,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.longpressDirect"
           }
         }
       ]
@@ -126,7 +134,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "i18nKey": "route.link"
       },
       "children": [
         {
@@ -140,7 +149,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.bing"
           }
         },
         {
@@ -154,7 +164,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.gitee"
           }
         },
         {
@@ -168,7 +179,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.github"
           }
         },
         {
@@ -182,7 +194,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.docs"
           }
         },
         {
@@ -196,7 +209,8 @@
             "isHide": false,
             "isFull": false,
             "isAffix": false,
-            "isKeepAlive": true
+            "isKeepAlive": true,
+            "i18nKey": "route.juejin"
           }
         }
       ]
@@ -212,7 +226,24 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "i18nKey": "route.about"
+      }
+    },
+    {
+      "path": "/userCenter/index",
+      "name": "userCenter",
+      "component": "/user-center/index",
+      "meta": {
+        "icon": "userCenter",
+        "title": "用户中心",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true,
+        "hideInMenu": true,
+        "i18nKey": "route.userCenter"
       }
     }
   ],
