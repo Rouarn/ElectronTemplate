@@ -1,7 +1,7 @@
 {
   "productName": "electron-template",
   "appId": "com.electron.template",
-  "copyright": "© 2025 duola Technology Co., Ltd.",
+  "copyright": "© 2025 woyuxiaji Technology Co., Ltd.",
   "directories": {
     "output": "public/out"
   },

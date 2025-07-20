@@ -1,7 +1,7 @@
 {
   "name": "electron-template",
-  "version": "4.1.0",
-  "description": "A fast, desktop software development framework",
+  "version": "0.0.0",
+  "description": "一个基于Vue3、Vite7、TypeScript、NaiveUI and UnoCSS的清新优雅前台模版。",
   "main": "./public/electron/main.js",
   "scripts": {
     "dev": "ee-bin dev",
@@ -20,14 +20,14 @@
     "build-m-arm64": "ee-bin build --cmds=mac_arm64",
     "build-l": "ee-bin build --cmds=linux"
   },
-  "repository": "https://github.com/dromara/electron-egg.git",
+  "repository": "https://github.com/Rouarn/Electron-template",
   "keywords": [
     "Electron",
     "electron-egg",
     "ElectronEgg"
   ],
-  "author": "哆啦好梦, Inc <530353222@qq.com>",
-  "license": "Apache",
+  "author": "我与夏季, Inc <woyuxiaji@foxmail.com>",
+  "license": "UNLICENSED",
   "devDependencies": {
     "@electron/rebuild": "^3.7.1",
     "@types/node": "^20.16.0",

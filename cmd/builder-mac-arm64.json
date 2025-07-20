@@ -1,9 +1,9 @@
 {
   "productName": "electron-template",
   "appId": "com.bilibili.template",
-  "copyright": "© 2025 duola Technology Co., Ltd.",
+  "copyright": "© 2025 woyuxiaji Technology Co., Ltd.",
   "directories": {
-    "output": "out"
+    "output": "public/out"
   },
   "asar": true,
   "files": [
