@@ -52,24 +52,23 @@
   },
   "lint-staged": {
     "frontend/**/*.{js,ts,vue}": [
-      "eslint --fix --cache --max-warnings=0",
-      "prettier --write --cache"
+      "npx eslint --fix --cache --max-warnings=0",
+      "npx prettier --write --cache"
     ],
     "frontend/**/*.{cjs,mjs,json}": [
-      "prettier --write --cache"
+      "npx prettier --write --cache"
     ],
     "frontend/**/*.{vue,html}": [
-      "eslint --fix --cache --max-warnings=0",
-      "prettier --write --cache"
+      "npx prettier --write --cache"
     ],
     "frontend/**/*.{css,scss,less,sass}": [
-      "prettier --write --cache"
+      "npx prettier --write --cache"
     ],
     "frontend/**/*.{md,mdx}": [
-      "prettier --write --cache"
+      "npx prettier --write --cache"
     ],
     "*.{js,ts,json,md}": [
-      "prettier --write --cache"
+      "npx prettier --write --cache"
     ]
   }
 }
