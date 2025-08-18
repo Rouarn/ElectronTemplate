@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo "${BLUE}📝 Validating commit message...${NC}"
+
+# Run commitlint
+if npx --no-install commitlint --edit $1; then
+    echo "${GREEN}✅ Commit message is valid${NC}"
+else
+    echo "${RED}❌ Commit message validation failed${NC}"
+    echo "${YELLOW}💡 Please follow the conventional commit format:${NC}"
+    echo "${YELLOW}   <type>[optional scope]: <description>${NC}"
+    echo "${YELLOW}   ${NC}"
+    echo "${YELLOW}   Examples:${NC}"
+    echo "${YELLOW}   - feat: add new user authentication${NC}"
+    echo "${YELLOW}   - fix: resolve login issue${NC}"
+    echo "${YELLOW}   - docs: update README${NC}"
+    echo "${YELLOW}   - style: format code${NC}"
+    echo "${YELLOW}   - refactor: restructure user service${NC}"
+    echo "${YELLOW}   - test: add unit tests${NC}"
+    echo "${YELLOW}   - chore: update dependencies${NC}"
+    exit 1
+fi
