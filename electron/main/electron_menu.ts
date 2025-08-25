@@ -4,7 +4,7 @@ import { app, BrowserWindow, Menu, shell } from 'electron'
 let mainWindow: Electron.CrossProcessExports.BrowserWindow | null = null
 
 // 安全地发送消息到渲染进程
-function safelySendToRenderer(channel: string, ...args: any[]) {
+function safelySendToRenderer(channel: string, ...args: unknown[]) {
   // 如果主窗口不存在，尝试获取焦点窗口
   if (!mainWindow || mainWindow.isDestroyed()) {
     const focusedWindow = BrowserWindow.getFocusedWindow()
@@ -47,7 +47,7 @@ export function createMenu(win: Electron.CrossProcessExports.BrowserWindow) {
   // 保存窗口引用
   mainWindow = win
   // 创建通用菜单模板
-  const template: any[] = [
+  const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: '文件',
       submenu: [
