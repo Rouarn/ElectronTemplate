@@ -1,7 +1,7 @@
-import { ElectronEgg } from 'ee-core'
-import { Lifecycle } from './preload/lifecycle'
-import { preload } from './preload'
 import { createMenu } from './main/electron_menu'
+import { preload } from './preload'
+import { Lifecycle } from './preload/lifecycle'
+import { ElectronEgg } from 'ee-core'
 
 // New app
 const app = new ElectronEgg()

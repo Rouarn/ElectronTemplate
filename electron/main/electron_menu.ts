@@ -1,4 +1,4 @@
-import { app, Menu, shell, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu, shell } from 'electron'
 
 // 保存主窗口的引用
 let mainWindow: Electron.CrossProcessExports.BrowserWindow | null = null

@@ -9,15 +9,15 @@ module.exports = {
    */
   dev: {
     frontend: {
-      directory: "./frontend",
-      cmd: "npm",
-      args: ["run", "dev"],
+      directory: './frontend',
+      cmd: 'npm',
+      args: ['run', 'dev'],
       port: 8848,
     },
     electron: {
-      directory: "./",
-      cmd: "electron",
-      args: [".", "--env=local"],
+      directory: './',
+      cmd: 'electron',
+      args: ['.', '--env=local'],
       watch: true,
       delay: 1000,
     },
@@ -29,58 +29,58 @@ module.exports = {
    */
   build: {
     frontend: {
-      directory: "./frontend",
-      cmd: "npm",
-      args: ["run", "build"],
+      directory: './frontend',
+      cmd: 'npm',
+      args: ['run', 'build'],
     },
     electron: {
-      type: "typescript",
+      type: 'typescript',
     },
     win64: {
-      cmd: "electron-builder",
-      directory: "./",
-      args: ["--config=./cmd/builder.json", "-w=nsis", "--x64"],
+      cmd: 'electron-builder',
+      directory: './',
+      args: ['--config=./cmd/builder.json', '-w=nsis', '--x64'],
     },
     win32: {
-      args: ["--config=./cmd/builder.json", "-w=nsis", "--ia32"],
+      args: ['--config=./cmd/builder.json', '-w=nsis', '--ia32'],
     },
     win_e: {
-      args: ["--config=./cmd/builder.json", "-w=portable", "--x64"],
+      args: ['--config=./cmd/builder.json', '-w=portable', '--x64'],
     },
     win_7z: {
-      args: ["--config=./cmd/builder.json", "-w=7z", "--x64"],
+      args: ['--config=./cmd/builder.json', '-w=7z', '--x64'],
     },
     mac: {
-      args: ["--config=./cmd/builder-mac.json", "-m"],
+      args: ['--config=./cmd/builder-mac.json', '-m'],
     },
     mac_arm64: {
-      args: ["--config=./cmd/builder-mac-arm64.json", "-m", "--arm64"],
+      args: ['--config=./cmd/builder-mac-arm64.json', '-m', '--arm64'],
     },
     linux: {
-      args: ["--config=./cmd/builder-linux.json", "-l=deb", "--x64"],
+      args: ['--config=./cmd/builder-linux.json', '-l=deb', '--x64'],
     },
     linux_arm64: {
-      args: ["--config=./cmd/builder-linux.json", "-l=deb", "--arm64"],
+      args: ['--config=./cmd/builder-linux.json', '-l=deb', '--arm64'],
     },
     go_w: {
-      directory: "./go",
-      cmd: "go",
-      args: ["build", "-o=../build/extraResources/goapp.exe"],
+      directory: './go',
+      cmd: 'go',
+      args: ['build', '-o=../build/extraResources/goapp.exe'],
     },
     go_m: {
-      directory: "./go",
-      cmd: "go",
-      args: ["build", "-o=../build/extraResources/goapp"],
+      directory: './go',
+      cmd: 'go',
+      args: ['build', '-o=../build/extraResources/goapp'],
     },
     go_l: {
-      directory: "./go",
-      cmd: "go",
-      args: ["build", "-o=../build/extraResources/goapp"],
+      directory: './go',
+      cmd: 'go',
+      args: ['build', '-o=../build/extraResources/goapp'],
     },
     python: {
-      directory: "./python",
-      cmd: "python",
-      args: ["./setup.py", "build"],
+      directory: './python',
+      cmd: 'python',
+      args: ['./setup.py', 'build'],
     },
   },
 
@@ -90,28 +90,28 @@ module.exports = {
    */
   move: {
     frontend_dist: {
-      src: "./frontend/dist",
-      dest: "./public/dist",
+      src: './frontend/dist',
+      dest: './public/dist',
     },
     go_static: {
-      src: "./frontend/dist",
-      dest: "./go/public/dist",
+      src: './frontend/dist',
+      dest: './go/public/dist',
     },
     go_config: {
-      src: "./go/config",
-      dest: "./go/public/config",
+      src: './go/config',
+      dest: './go/public/config',
     },
     go_package: {
-      src: "./package.json",
-      dest: "./go/public/package.json",
+      src: './package.json',
+      dest: './go/public/package.json',
     },
     go_images: {
-      src: "./public/images",
-      dest: "./go/public/images",
+      src: './public/images',
+      dest: './go/public/images',
     },
     python_dist: {
-      src: "./python/dist",
-      dest: "./build/extraResources/py",
+      src: './python/dist',
+      dest: './build/extraResources/py',
     },
   },
 
@@ -120,9 +120,9 @@ module.exports = {
    * ee-bin start
    */
   start: {
-    directory: "./",
-    cmd: "electron",
-    args: [".", "--env=prod"],
+    directory: './',
+    cmd: 'electron',
+    args: ['.', '--env=prod'],
   },
 
   /**
@@ -130,34 +130,31 @@ module.exports = {
    */
   encrypt: {
     frontend: {
-      type: "none",
-      files: ["./public/dist/**/*.(js|json)"],
-      cleanFiles: ["./public/dist"],
+      type: 'none',
+      files: ['./public/dist/**/*.(js|json)'],
+      cleanFiles: ['./public/dist'],
       confusionOptions: {
         compact: true,
         stringArray: true,
-        stringArrayEncoding: ["none"],
+        stringArrayEncoding: ['none'],
         stringArrayCallsTransform: true,
         numbersToExpressions: true,
-        target: "browser",
+        target: 'browser',
       },
     },
     electron: {
-      type: "confusion",
-      files: ["./public/electron/**/*.(js|json)"],
-      cleanFiles: ["./public/electron"],
-      specificFiles: [
-        "./public/electron/main.js",
-        "./public/electron/preload/bridge.js",
-      ],
+      type: 'confusion',
+      files: ['./public/electron/**/*.(js|json)'],
+      cleanFiles: ['./public/electron'],
+      specificFiles: ['./public/electron/main.js', './public/electron/preload/bridge.js'],
       confusionOptions: {
         compact: true,
         stringArray: true,
-        stringArrayEncoding: ["none"],
+        stringArrayEncoding: ['none'],
         deadCodeInjection: false,
         stringArrayCallsTransform: true,
         numbersToExpressions: true,
-        target: "node",
+        target: 'node',
       },
     },
   },
@@ -169,27 +166,27 @@ module.exports = {
   exec: {
     // 单独调试，air 实现 go 热重载
     go: {
-      directory: "./go",
-      cmd: "air",
-      args: ["-c=config/.air.toml"],
+      directory: './go',
+      cmd: 'air',
+      args: ['-c=config/.air.toml'],
     },
     // windows 单独调试，air 实现 go 热重载
     go_w: {
-      directory: "./go",
-      cmd: "air",
-      args: ["-c=config/.air.windows.toml"],
+      directory: './go',
+      cmd: 'air',
+      args: ['-c=config/.air.windows.toml'],
     },
     // 单独调试，以基础方式启动 go
     go2: {
-      directory: "./go",
-      cmd: "go",
-      args: ["run", "./main.go", "--env=dev", "--basedir=../", "--port=7073"],
+      directory: './go',
+      cmd: 'go',
+      args: ['run', './main.go', '--env=dev', '--basedir=../', '--port=7073'],
     },
     python: {
-      directory: "./python",
-      cmd: "python",
-      args: ["./main.py", "--port=7074"],
-      stdio: "inherit", // ignore
+      directory: './python',
+      cmd: 'python',
+      args: ['./main.py', '--port=7074'],
+      stdio: 'inherit', // ignore
     },
   },
-};
+}

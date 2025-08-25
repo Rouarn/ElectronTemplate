@@ -3,14 +3,13 @@
  * @class
  */
 class ExampleController {
-
   /**
    * test
    */
   async test(): Promise<string> {
-    return 'hello electron-egg';
+    return 'hello electron-egg'
   }
 }
-ExampleController.toString = () => '[class ExampleController]';
+ExampleController.toString = () => '[class ExampleController]'
 
-export default ExampleController;
+export default ExampleController

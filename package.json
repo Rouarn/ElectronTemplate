@@ -19,6 +19,8 @@
     "build-m": "ee-bin build --cmds=mac",
     "build-m-arm64": "ee-bin build --cmds=mac_arm64",
     "build-l": "ee-bin build --cmds=linux",
+    "lint:eslint": "eslint . --fix",
+    "lint:prettier": "prettier --write '**/*.{js,ts,vue}'",
     "prepare": "husky",
     "lint:lint-staged": "lint-staged",
     "commit": "cz-git commit"
