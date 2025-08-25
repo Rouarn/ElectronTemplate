@@ -1,6 +1,51 @@
-import { app, Menu, shell } from 'electron'
+import { app, Menu, shell, BrowserWindow } from 'electron'
+
+// 保存主窗口的引用
+let mainWindow: Electron.CrossProcessExports.BrowserWindow | null = null
+
+// 安全地发送消息到渲染进程
+function safelySendToRenderer(channel: string, ...args: any[]) {
+  // 如果主窗口不存在，尝试获取焦点窗口
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    const focusedWindow = BrowserWindow.getFocusedWindow()
+    if (focusedWindow) {
+      focusedWindow.webContents.send(channel, ...args)
+      return
+    }
+    // 如果没有焦点窗口，尝试获取所有窗口的第一个
+    const allWindows = BrowserWindow.getAllWindows()
+    if (allWindows.length > 0) {
+      allWindows[0].webContents.send(channel, ...args)
+      return
+    }
+    console.log(`无法发送 ${channel} 消息：没有可用的窗口`)
+    return
+  }
+  mainWindow.webContents.send(channel, ...args)
+}
+
+// 安全地打开开发者工具
+function safelyToggleDevTools() {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    const focusedWindow = BrowserWindow.getFocusedWindow()
+    if (focusedWindow) {
+      focusedWindow.webContents.toggleDevTools()
+      return
+    }
+    const allWindows = BrowserWindow.getAllWindows()
+    if (allWindows.length > 0) {
+      allWindows[0].webContents.toggleDevTools()
+      return
+    }
+    console.log('无法打开开发者工具：没有可用的窗口')
+    return
+  }
+  mainWindow.webContents.toggleDevTools()
+}
 
 export function createMenu(win: Electron.CrossProcessExports.BrowserWindow) {
+  // 保存窗口引用
+  mainWindow = win
   // 创建通用菜单模板
   const template: any[] = [
     {
@@ -9,7 +54,7 @@ export function createMenu(win: Electron.CrossProcessExports.BrowserWindow) {
         {
           label: '检查更新',
           click: () => {
-            win.webContents.send('menuCheckUpdate')
+            safelySendToRenderer('menuCheckUpdate')
           },
           accelerator: 'CmdOrCtrl+U',
         },
@@ -62,14 +107,14 @@ export function createMenu(win: Electron.CrossProcessExports.BrowserWindow) {
         {
           label: '关于',
           click: () => {
-            win.webContents.send('menuAbout')
+            safelySendToRenderer('menuAbout')
           },
         },
         {
           label: '开发者工具',
           accelerator: 'CmdOrCtrl+Shift+I',
           click: () => {
-            win.webContents.toggleDevTools()
+            safelyToggleDevTools()
           },
         },
         { type: 'separator' },

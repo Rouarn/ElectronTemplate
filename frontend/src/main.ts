@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './plugins/assets'
+import { setupIpcEvents } from './utils/ipcEvents'
 import { setupI18n } from './locales'
 import { setupAppVersionNotification, setupDayjs, setupDirectives, setupIconifyOffline, setupLoading, setupNProgress } from './plugins'
 import router from './router'
@@ -26,6 +27,9 @@ function setupApp() {
   app.use(router)
 
   setupAppVersionNotification()
+
+  // 初始化IPC事件监听
+  setupIpcEvents()
 
   app.mount('#app')
 }
