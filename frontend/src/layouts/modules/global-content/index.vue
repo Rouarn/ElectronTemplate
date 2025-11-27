@@ -22,13 +22,13 @@ const routeStore = useRouteStore()
 <template>
   <RouterView v-slot="{ Component, route }">
     <Transition name="fade" mode="out-in">
-      <KeepAlive :include="routeStore.cacheRoutes">
+      <KeepAlive :include="routeStore.cacheRoutes" :exclude="routeStore.excludeCacheRoutes">
         <component
           :is="Component"
           v-if="appStore.reloadFlag"
           :key="route.fullPath"
           :class="{ 'p-16px': showPadding }"
-          class="flex-grow bg-layout transition-300 min-h-80vh"
+          class="flex-grow bg-layout transition-300"
         />
       </KeepAlive>
     </Transition>

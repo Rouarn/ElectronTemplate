@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { NSpace, NText } from 'naive-ui'
 
-defineProps<{
-  isTop: boolean
-}>()
-
 const currentYear = new Date().getFullYear()
 </script>
 
 <template>
-  <footer
-    class="w-full bg-white dark:bg-#18181c border-t border-gray-200 dark:border-gray-700 py-6 transition-300"
-    :class="isTop ? '' : 'fixed-lb z-50'"
-  >
+  <footer class="w-full bg-white dark:bg-#18181c border-t border-gray-200 dark:border-gray-700 py-6">
     <div class="max-w-screen-md mx-auto px-4 text-center">
       <NSpace vertical size="small">
         <NText depth="3" class="text-sm"> © {{ currentYear }} 您的公司名称. 保留所有权利 </NText>

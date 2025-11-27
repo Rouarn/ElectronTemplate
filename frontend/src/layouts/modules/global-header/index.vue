@@ -37,6 +37,7 @@ const { isFullscreen, toggle } = useFullscreen()
         <LangSwitch :lang="appStore.locale" :lang-options="appStore.localeOptions" @change-lang="appStore.changeLocale" />
         <!-- 主题切换 -->
         <ThemeSchemaSwitch :theme-schema="themeStore.themeScheme" :is-dark="themeStore.darkMode" @switch="themeStore.toggleThemeScheme" />
+        <!-- 主题配置按钮 -->
         <ThemeButton />
         <!-- 用户头像 -->
         <UserAvatar />

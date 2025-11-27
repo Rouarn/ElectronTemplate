@@ -1,27 +1,38 @@
-// import http from '@/service/request'
-// import { PORT1 } from '@/service/request/servicePort'
-import authMenuList from '@/assets/json/authMenuList.json'
+import { request } from '@/service/request'
+import servicePort from '@/service/request/servicePort'
 
-/**
- * Login
- *
- * @param userName User name
- * @param password Password
- */
-export function fetchLogin(userName: string, password: string) {
-  // return http.post<Api.Auth.LoginToken>(PORT1 + '/auth/login', {
-  //   userName,
-  //   password,
-  // })
-  return Promise.resolve({
-    code: 200,
-    data: { token: '123456', userName, password },
+/** 用户登录 */
+export function fetchLogin(username: string, password: string) {
+  return request.post<Api.Auth.LoginToken>(`${servicePort.auth}/login`, {
+    username,
+    password,
   })
 }
 
-// 获取菜单列表
-export const fetchAuthMenuListApi = () => {
-  // return http.get<Api.Route.UserRoute[]>(PORT1 + `/menu/list`, {}, { loading: false })
-  // 如果想让菜单变为本地数据，注释上一行代码，并引入本地 authMenuList.json 数据
-  return authMenuList
+/** 获取用户信息 */
+export function fetchUserInfo() {
+  return request.get<Api.Auth.UserInfo>(`${servicePort.auth}/getUserInfo`)
+}
+
+/** 注册用户 */
+export function fetchRegister(user: Api.Auth.RegisterUser) {
+  return request.post<Api.Auth.LoginToken>(`${servicePort.auth}/register`, user)
+}
+
+/** 生成验证码 */
+export function fetchCaptcha() {
+  return request.get<Api.Auth.Captcha>(`${servicePort.auth}/captcha`, {}, { loading: false })
+}
+
+/** 验证码校验 */
+export function fetchCaptchaCheck({ token, code }: Api.Auth.CaptchaVerify) {
+  return request.post<Api.Auth.LoginToken>(`${servicePort.auth}/captcha/verify`, {
+    token,
+    code,
+  })
+}
+
+/** 退出登录 */
+export function fetchLogout() {
+  return request.post(`${servicePort.auth}/logout`)
 }
