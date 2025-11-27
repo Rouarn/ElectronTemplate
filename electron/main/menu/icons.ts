@@ -16,10 +16,10 @@ function img(...segments: string[]): Electron.NativeImage | undefined {
  * 菜单图标集合（部分系统菜单可能不显示图标，如 macOS）
  */
 export const icons: Record<string, Electron.NativeImage | undefined> = {
-  menu: img('logo-32.png'),
-  back: img('tray.png'),
-  forward: img('logo-32.png'),
+  menu: undefined,
+  back: undefined,
+  forward: undefined,
   devtools: img('tray.png'),
-  about: img('logo-32.png'),
-  website: img('logo-32.png'),
+  about: undefined,
+  website: undefined,
 }

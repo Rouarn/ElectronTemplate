@@ -4,6 +4,7 @@ import { fileMenu } from './sections/file'
 import { helpMenu } from './sections/help'
 import { viewMenu } from './sections/view'
 import { windowMenu } from './sections/window'
+import { setupNavState } from './state'
 import type { MenuTemplateBuilder } from './types'
 import { app, Menu } from 'electron'
 
@@ -42,7 +43,8 @@ export const buildTemplate: MenuTemplateBuilder = (win) => {
 /**
  * 构建并设置应用主菜单
  */
-export function createMenu(win: Electron.CrossProcessExports.BrowserWindow): void {
+export function createMenu(win?: Electron.CrossProcessExports.BrowserWindow): void {
   const menu = Menu.buildFromTemplate(buildTemplate(win))
   Menu.setApplicationMenu(menu)
+  setupNavState(win)
 }

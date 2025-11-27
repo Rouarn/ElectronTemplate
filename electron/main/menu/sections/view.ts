@@ -11,12 +11,14 @@ export const viewMenu: MenuSection = (win) => ({
   submenu: [
     {
       label: '后退',
+      id: 'view-back',
       icon: icons.back,
       accelerator: isMac ? 'CmdOrCtrl+[' : 'Alt+Left',
       click: () => safeGoBack(win),
     },
     {
       label: '前进',
+      id: 'view-forward',
       icon: icons.forward,
       accelerator: isMac ? 'CmdOrCtrl+]' : 'Alt+Right',
       click: () => safeGoForward(win),
