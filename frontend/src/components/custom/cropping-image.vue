@@ -11,9 +11,9 @@
         <!-- 弹窗标题 -->
         <div class="croppertitle text-14px font-medium">{{ croppertitle }}</div>
         <!-- 关闭按钮 -->
-        <NButton type="primary" size="small" block ghost :bordered="false" @click="closeCropper"
-          ><icon-mdi-close class="text-20px"
-        /></NButton>
+        <NButton type="primary" size="small" block ghost :bordered="false" @click="closeCropper">
+          <icon-mdi-close class="text-20px" />
+        </NButton>
       </NSpace>
 
       <!-- 裁剪与预览区 -->

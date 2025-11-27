@@ -1,7 +1,30 @@
-import { app, BrowserWindow, Menu, shell } from 'electron'
+import { app, BrowserWindow, Menu, nativeImage, shell } from 'electron'
+import path, { join } from 'path'
 
 // 保存主窗口的引用
 let mainWindow: Electron.CrossProcessExports.BrowserWindow | null = null
+
+/**
+ * 解析公共路径
+ * @param segments 路径片段
+ * @returns 完整的公共路径
+ */
+function resolvePublicPath(...segments: string[]) {
+  const base = app.getAppPath()
+  return path.join(base, 'public', ...segments)
+}
+
+/**
+ * 创建图标
+ * @param prefix 图标前缀路径
+ * @param iconName 图标相对路径
+ * @returns 图标对象或 undefined
+ */
+function createIcon(prefix: string, iconName: string) {
+  const fullPath = resolvePublicPath(join(prefix, iconName))
+  const img = nativeImage.createFromPath(fullPath)
+  return img && !img.isEmpty() ? img : undefined
+}
 
 // 安全地发送消息到渲染进程
 function safelySendToRenderer(channel: string, ...args: unknown[]) {
@@ -53,6 +76,7 @@ export function createMenu(win: Electron.CrossProcessExports.BrowserWindow) {
       submenu: [
         {
           label: '检查更新',
+          icon: createIcon('images', 'tray.png'),
           click: () => {
             safelySendToRenderer('menuCheckUpdate')
           },
@@ -84,6 +108,60 @@ export function createMenu(win: Electron.CrossProcessExports.BrowserWindow) {
     {
       label: '视图',
       submenu: [
+        {
+          label: '后退',
+          accelerator: process.platform === 'darwin' ? 'CmdOrCtrl+[' : 'Alt+Left',
+          click: () => {
+            if (!mainWindow || mainWindow.isDestroyed()) {
+              const focusedWindow = BrowserWindow.getFocusedWindow()
+              if (focusedWindow) {
+                const wc = focusedWindow.webContents
+                if (wc.canGoBack()) wc.goBack()
+                else console.log('无法后退：当前没有历史记录')
+                return
+              }
+              const allWindows = BrowserWindow.getAllWindows()
+              if (allWindows.length > 0) {
+                const wc = allWindows[0].webContents
+                if (wc.canGoBack()) wc.goBack()
+                else console.log('无法后退：当前没有历史记录')
+                return
+              }
+              console.log('无法后退：没有可用的窗口')
+              return
+            }
+            const wc = mainWindow.webContents
+            if (wc.canGoBack()) wc.goBack()
+            else console.log('无法后退：当前没有历史记录')
+          },
+        },
+        {
+          label: '前进',
+          accelerator: process.platform === 'darwin' ? 'CmdOrCtrl+]' : 'Alt+Right',
+          click: () => {
+            if (!mainWindow || mainWindow.isDestroyed()) {
+              const focusedWindow = BrowserWindow.getFocusedWindow()
+              if (focusedWindow) {
+                const wc = focusedWindow.webContents
+                if (wc.canGoForward()) wc.goForward()
+                else console.log('无法前进：当前没有历史记录')
+                return
+              }
+              const allWindows = BrowserWindow.getAllWindows()
+              if (allWindows.length > 0) {
+                const wc = allWindows[0].webContents
+                if (wc.canGoForward()) wc.goForward()
+                else console.log('无法前进：当前没有历史记录')
+                return
+              }
+              console.log('无法前进：没有可用的窗口')
+              return
+            }
+            const wc = mainWindow.webContents
+            if (wc.canGoForward()) wc.goForward()
+            else console.log('无法前进：当前没有历史记录')
+          },
+        },
         { label: '重新加载', accelerator: 'CmdOrCtrl+R', role: 'reload' },
         { label: '强制重新加载', accelerator: 'CmdOrCtrl+Shift+R', role: 'forceReload' },
         { type: 'separator' },
