@@ -14,6 +14,10 @@ declare global {
     $notification?: import('naive-ui').NotificationProviderInst
     /** 加载实例 */
     $loading?: import('@/plugins/loading').LoadingAPI
+    $electron: {
+      ipcRenderer: import('electron').IpcRenderer
+    }
+    $ipc: import('electron').IpcRenderer
   }
 
   /** 项目构建时间 */
