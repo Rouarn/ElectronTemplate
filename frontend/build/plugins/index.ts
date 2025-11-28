@@ -3,7 +3,6 @@ import { setupComponentsPlugin } from './components'
 import { setupHtmlPlugin } from './htmlPlugin'
 import { setupIconsPlugin } from './icons'
 import { setupProgressPlugin } from './progress'
-import { setupPWAPlugin } from './pwa'
 import { setupSvgIconsPlugin } from './svgIcons'
 import { setupUnocssPlugin } from './unocss'
 import { setupVuePlugin } from './vue'
@@ -32,7 +31,6 @@ export function setupVitePlugins(viteEnv: Env.ImportMeta, buildTime: string): Pl
     setupHtmlPlugin(buildTime),
     setupIconsPlugin(localIconPath, collectionName),
     setupSvgIconsPlugin(localIconPath, VITE_ICON_LOCAL_PREFIX),
-    setupPWAPlugin(),
   ]
 
   return plugins
