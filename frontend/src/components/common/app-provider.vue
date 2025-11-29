@@ -11,14 +11,18 @@ const ContextHolder = defineComponent({
   name: 'ContextHolder',
   setup() {
     function register() {
-      window.$loadingBar = useLoadingBar()
-      window.$dialog = useDialog()
-      window.$message = useMessage()
-      window.$notification = useNotification()
-      window.$loading = createLoading()
-      const electronApi = window.require?.('electron') as typeof import('electron')
-      window.$electron = electronApi
-      window.$ipc = electronApi.ipcRenderer
+      try {
+        window.$loadingBar = useLoadingBar()
+        window.$dialog = useDialog()
+        window.$message = useMessage()
+        window.$notification = useNotification()
+        window.$loading = createLoading()
+        const electronApi = window.require?.('electron') as typeof import('electron')
+        window.$electron = electronApi
+        window.$ipc = electronApi.ipcRenderer
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     register()

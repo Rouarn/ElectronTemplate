@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouterPush } from '@/hooks/common/router'
 import pkg from '~/package.json'
 
-const router = useRouter()
+const { routerPush } = useRouterPush()
 
 const features = [
   {
@@ -43,7 +43,7 @@ const techStack = [
 // 按钮功能函数
 const handleGetStarted = () => {
   // 使用Vue Router跳转到关于页面
-  router.push('/about')
+  routerPush('/about')
 }
 
 const handleViewSource = () => {

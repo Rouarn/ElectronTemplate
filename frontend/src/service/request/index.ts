@@ -2,6 +2,7 @@ import router from '@/router'
 import { useAuthStore } from '@/stores/modules/auth'
 import { AxiosCanceler, REQUEST_CANCEL_ERROR } from './axiosCancel'
 import { checkStatus, isServerError } from './checkStatus'
+import { computeRetryDelay } from './utils'
 import { ResultEnum } from '@/enum'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
@@ -18,7 +19,7 @@ export type ErrorType = 'overdue' | 'business' | 'network' | 'timeout' | 'cancel
  * - 当 error=true 时：message 为错误文案，data 为 null（运行时），类型上仍为 T 以便通过 if(error) 收窄后使用
  * - 当 error=false 时：message 为空字符串，data 为后端数据（可能为 null，如更新类接口）
  */
-export type OptimizedResponse<T> = { error: boolean; message: string; data: T }
+export type OptimizedResponse<T> = { error: boolean; message: string; data: T; errorType?: ErrorType }
 
 interface ExtendedAxiosResponse<T = unknown> extends AxiosResponse<App.Service.Response<T>> {
   __isError?: boolean
@@ -31,13 +32,18 @@ export interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   retry?: {
     count: number
     delay: number
+    maxDelay?: number
+    backoff?: 'linear' | 'exponential'
+    jitter?: boolean
     retryCondition?: (error: AxiosError) => boolean
   }
   isUpload?: boolean
   isDownload?: boolean
   customErrorMessage?: string
   skipErrorHandler?: boolean
+  skipAuthRefresh?: boolean
   __retryCount?: number
+  __retriedAfterRefresh?: boolean
 }
 
 /* ---------------- Loading 管理（全局请求动效） ---------------- */
@@ -57,9 +63,12 @@ function closeLoading() {
 const DEFAULT_RETRY_CONFIG = {
   count: 2,
   delay: 1000,
+  maxDelay: 8000,
+  backoff: 'exponential' as const,
+  jitter: true,
   retryCondition: (error: AxiosError) => {
-    if (!error.response) return true // 网络错误重试
-    return isServerError(error.response.status) // 5xx 重试
+    if (!error.response) return true
+    return isServerError(error.response.status)
   },
 }
 
@@ -69,7 +78,6 @@ const axiosConfig: AxiosRequestConfig = {
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
-    apifoxToken: '',
   },
 }
 
@@ -90,6 +98,56 @@ function getBackendMessageFromResponse<T>(response: ExtendedAxiosResponse<T>, fa
   return backendMessage || fallback
 }
 
+/* ---------------- Token 刷新管理 ---------------- */
+const ENABLE_TOKEN_REFRESH = String(import.meta.env.VITE_ENABLE_TOKEN_REFRESH || 'N').toUpperCase() === 'Y'
+const TOKEN_REFRESH_BUFFER_MS = 30_000
+
+let isRefreshing = false
+let refreshPromise: Promise<boolean> | null = null
+
+async function refreshTokenOnce(): Promise<boolean> {
+  if (!ENABLE_TOKEN_REFRESH) return false
+  if (isRefreshing && refreshPromise) return refreshPromise
+
+  const authStore = useAuthStore()
+  if (!authStore.refreshToken) return false
+  const rExp = Number(authStore.refreshTokenExpiresAt || 0)
+  if (rExp && Date.now() >= rExp) return false
+
+  isRefreshing = true
+  const doRefresh = async () => {
+    // 动态引入以避免循环依赖
+    const { fetchRefreshToken } = await import('@/service/api/login')
+    const { data, error } = await fetchRefreshToken(authStore.refreshToken)
+    if (error) return false
+    authStore.setToken(data?.accessToken || '')
+    authStore.setTokenType(data?.tokenType || 'Bearer')
+    if (data?.refreshToken) authStore.setRefreshToken(data.refreshToken)
+    const expiresIn = Number(data?.expiresIn || 0)
+    if (expiresIn > 0) authStore.setTokenExpiresAt(Date.now() + expiresIn * 1000)
+    const refreshExpiresIn = Number(data?.refreshExpiresIn || 0)
+    if (refreshExpiresIn > 0) authStore.setRefreshTokenExpiresAt(Date.now() + refreshExpiresIn * 1000)
+    return Boolean(data?.accessToken)
+  }
+
+  refreshPromise = doRefresh()
+  try {
+    const ok = await refreshPromise
+    return ok
+  } finally {
+    isRefreshing = false
+    refreshPromise = null
+  }
+}
+
+function willTokenExpireSoon(): boolean {
+  if (!ENABLE_TOKEN_REFRESH) return false
+  const authStore = useAuthStore()
+  const exp = Number(authStore.tokenExpiresAt || 0)
+  if (!exp) return false
+  return Date.now() >= exp - TOKEN_REFRESH_BUFFER_MS
+}
+
 /* ---------------- 请求类（统一封装发送、重试、错误提示） ---------------- */
 class RequestHttp {
   private service: AxiosInstance
@@ -102,7 +160,7 @@ class RequestHttp {
   private setupInterceptors() {
     // 请求拦截器
     this.service.interceptors.request.use(
-      (config: CustomAxiosRequestConfig) => {
+      async (config: CustomAxiosRequestConfig) => {
         const userStore = useAuthStore()
 
         // 请求取消
@@ -113,12 +171,17 @@ class RequestHttp {
         config.loading ??= true
         if (config.loading && !config.isUpload) openLoading()
 
+        // 预刷新（可选）：在过期窗口内先刷新
+        if (!config.skipAuthRefresh && ENABLE_TOKEN_REFRESH && willTokenExpireSoon()) {
+          await refreshTokenOnce()
+        }
+
         // 请求头
         if (config.headers) {
           // axios 的 headers 可能是普通对象或 Headers 结构，安全判断
           try {
             // 设置 header
-            if (userStore.token) config.headers['Authorization'] = `Bearer ${userStore.token}`
+            if (userStore.token) config.headers['Authorization'] = `${userStore.tokenType || 'Bearer'} ${userStore.token}`
             if (config.isUpload) config.headers['Content-Type'] = 'multipart/form-data'
           } catch {
             // ignore
@@ -132,7 +195,7 @@ class RequestHttp {
 
     // 响应拦截器（错误分支使用类型守卫）
     this.service.interceptors.response.use(
-      (response: ExtendedAxiosResponse & { config: CustomAxiosRequestConfig }) => {
+      async (response: ExtendedAxiosResponse & { config: CustomAxiosRequestConfig }) => {
         const { config, data } = response
 
         // 移除 pending
@@ -147,13 +210,23 @@ class RequestHttp {
         // 文件下载直接返回原始 response
         if (config.isDownload) return response
 
-        // 登录过期
+        // 登录过期：尝试刷新后重试原请求
         if (data?.code === ResultEnum.OVERDUE) {
-          useAuthStore().setToken('')
+          const authStore = useAuthStore()
+          let refreshed = false
+          if (ENABLE_TOKEN_REFRESH && authStore.refreshToken && !config.__retriedAfterRefresh) {
+            refreshed = await refreshTokenOnce()
+            if (refreshed) {
+              const newConfig: CustomAxiosRequestConfig = { ...config, __retriedAfterRefresh: true }
+              return this.service.request(newConfig)
+            }
+          }
+
+          authStore.setToken('')
           router.replace('/_builtin/login')
 
           if (!config.skipErrorHandler) {
-            window.$message?.error(data.message || '登录已过期，请重新登录')
+            window.$message?.error(data?.message || '登录已过期，请重新登录')
           }
 
           response.__isError = true
@@ -242,6 +315,15 @@ class RequestHttp {
           }
         }
 
+        // 401 未授权：尝试刷新后重试原请求（避免死循环）
+        if (ENABLE_TOKEN_REFRESH && error.response?.status === 401 && config && !config.__retriedAfterRefresh) {
+          const ok = await refreshTokenOnce()
+          if (ok) {
+            const newConfig: CustomAxiosRequestConfig = { ...config, __retriedAfterRefresh: true }
+            return this.service.request(newConfig)
+          }
+        }
+
         // 自动重试：只有在配置存在并满足 shouldRetry 时才触发
         if (config && this.shouldRetry(error)) {
           return this.retryRequest(config, error)
@@ -257,13 +339,18 @@ class RequestHttp {
       // axios 层错误（超时、断网等），优先使用后端返回message
       const fallbackMessage = response.message || '网络错误'
       const message = getBackendMessageFromAxiosError(response, fallbackMessage)
-      return { data: null as unknown as T, error: true, message }
+      let type: ErrorType = 'network'
+      const rawMsg = typeof response.message === 'string' ? response.message : String(response.message ?? '')
+      if (rawMsg.includes('timeout')) type = 'timeout'
+      else if (response.response?.status === 401) type = 'overdue'
+      else if (typeof response.response?.status === 'number' && isServerError(response.response.status)) type = 'server'
+      return { data: null as unknown as T, error: true, message, errorType: type }
     }
 
     if (response.__isError) {
       // 业务错误（比如后端返回 code != 200），优先使用后端返回message
       const message = getBackendMessageFromResponse(response, '请求失败')
-      return { data: null as unknown as T, error: true, message }
+      return { data: null as unknown as T, error: true, message, errorType: response.__errorType }
     }
 
     if ((response.config as CustomAxiosRequestConfig)?.isDownload) {
@@ -288,10 +375,17 @@ class RequestHttp {
   }
 
   private async retryRequest(config: CustomAxiosRequestConfig, _error: AxiosError): Promise<OptimizedResponse<unknown>> {
-    const retryConfig = { ...DEFAULT_RETRY_CONFIG, ...config.retry }
-    config.__retryCount = (config.__retryCount || 0) + 1
+    const retryCfg = { ...DEFAULT_RETRY_CONFIG, ...config.retry }
+    const attempt = (config.__retryCount || 0) + 1
+    config.__retryCount = attempt
 
-    await sleep(retryConfig.delay)
+    const delay = computeRetryDelay(attempt, retryCfg.delay, {
+      backoff: retryCfg.backoff,
+      jitter: retryCfg.jitter,
+      maxDelay: retryCfg.maxDelay,
+    })
+
+    await sleep(delay)
 
     try {
       const response = await this.service.request(config)
