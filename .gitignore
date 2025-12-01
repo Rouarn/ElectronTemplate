@@ -34,4 +34,4 @@ package-lock.json
 data/
 public/electron/
 pnpm-lock.yaml
-pnpm-workspace.yaml
+!frontend/pnpm-workspace.yaml
