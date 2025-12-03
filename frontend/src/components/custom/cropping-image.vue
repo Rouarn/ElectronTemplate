@@ -1,15 +1,17 @@
 <template>
-  <!--
+  <NModal v-model:show="modalShow" :mask-closable="maskClosable">
+    <!--
     组件：CroppingImage（基于 vue-cropper 的图片裁剪弹窗）
     结构：模态框 -> 工作台（左：裁剪器 | 右：实时预览） -> 工具栏
     交互：选择图片 -> 设置比例/旋转/缩放 -> 实时预览 -> 确认裁剪
     事件：done（完成）、preview（预览）、error（错误）、clear（清空）、v-model 同步
   -->
-  <NModal v-model:show="modalShow" :mask-closable="maskClosable">
     <div class="cutter flex-col gap-12px">
       <NSpace justify="space-between">
         <!-- 弹窗标题 -->
-        <div class="croppertitle text-14px font-medium">{{ croppertitle }}</div>
+        <div class="croppertitle text-14px font-medium">
+          {{ croppertitle }}
+        </div>
         <!-- 关闭按钮 -->
         <NButton type="primary" size="small" block ghost :bordered="false" @click="closeCropper">
           <icon-mdi-close class="text-20px" />
@@ -22,6 +24,7 @@
         <div class="cropper-wrap">
           <VueCropper
             v-if="option.img"
+            :key="option.img"
             ref="cropperRef"
             :img="option.img"
             :output-size="option.outputSize"
@@ -453,6 +456,16 @@ function closeCropper() {
   modalShow.value = false
 }
 
+function clearImage() {
+  option.img = ''
+  if (state.objectUrl) URL.revokeObjectURL(state.objectUrl)
+  state.objectUrl = null
+  state.previewUrl = ''
+  state.previewMeta = { width: 0, height: 0 }
+  emit('clear')
+  emit('update:modelValue', null)
+}
+
 /**
  * 确认裁剪：同时输出 Base64 与 Blob，并透传宽高等信息
  * 关闭弹窗以完成一次流程
@@ -470,19 +483,11 @@ function confirmCrop() {
       }
       emit('done', payload)
       closeCropper()
+      nextTick(() => {
+        clearImage()
+      })
     })
   })
-}
-
-/** 清空当前图片：释放对象 URL、重置预览与 v-model */
-function clearImage() {
-  option.img = ''
-  if (state.objectUrl) URL.revokeObjectURL(state.objectUrl)
-  state.objectUrl = null
-  state.previewUrl = ''
-  state.previewMeta = { width: 0, height: 0 }
-  emit('clear')
-  emit('update:modelValue', null)
 }
 
 /** 对外暴露方法：兼容外部上传组件主动传入 File */

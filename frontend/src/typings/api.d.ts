@@ -31,9 +31,9 @@ declare namespace Api {
     interface LoginToken {
       accessToken: string
       refreshToken: string
-      tokenType: string
       expiresIn: number
       refreshExpiresIn: number
+      tokenType: string
     }
 
     interface Captcha {
