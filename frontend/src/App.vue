@@ -39,6 +39,21 @@ const watermarkProps = computed<WatermarkProps>(() => {
     zIndex: 9999,
   }
 })
+
+const menuAboutListener = () => {
+  window.$dialog?.info({
+    title: '关于',
+    content: '这是一个基于 Vue 3 和 Naive UI 的 Electron 模板',
+  })
+}
+
+onMounted(() => {
+  window.$ipc.on('menuAbout', menuAboutListener)
+})
+
+onUnmounted(() => {
+  window.$ipc.off('menuAbout', menuAboutListener)
+})
 </script>
 
 <template>
