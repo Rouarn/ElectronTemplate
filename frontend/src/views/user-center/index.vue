@@ -133,7 +133,7 @@ async function handleSave() {
 
     // 调用更新用户信息的 API
     saving.value = true
-    const { error } = await updateUserInfo(authStore.userInfo.userId, saveData)
+    const { error } = await updateUserInfo(authStore.userInfo.id, saveData)
     if (error) return
 
     // 更新本地状态
@@ -168,7 +168,7 @@ async function handlePasswordChange() {
         confirmPassword: '',
       })
       window.$message?.success(result.data?.message || '密码修改成功')
-      authStore.resetStore()
+      await authStore.resetStore()
     }
   } catch (_) {
     window.$message?.error('密码修改失败，请检查当前密码是否正确')
@@ -188,10 +188,10 @@ function onAvatarFileChange({ fileList }: { fileList: Array<UploadFileInfo> }) {
 async function onCropDone(payload: { blob?: Blob; fileName?: string }) {
   if (!payload.blob) return
   const type = payload.blob.type || 'image/jpeg'
-  const name = `avatar_${authStore.userInfo.userId}_${userForm.nickname || 'user'}_${Date.now()}.${type.split('/')[1] || 'jpeg'}`
+  const name = `avatar_${authStore.userInfo.id}_${userForm.nickname || 'user'}_${Date.now()}.${type.split('/')[1] || 'jpeg'}`
   const file = new File([payload.blob], name, { type })
-  const localUrl = URL.createObjectURL(payload.blob)
-  userForm.avatar = localUrl
+
+  userForm.avatar = URL.createObjectURL(payload.blob)
   try {
     const res = await uploadAvatar(file)
     if (res.data && res.data.downloadUrl) {
@@ -214,7 +214,7 @@ function onCropError(msg: string) {
 }
 
 // 格式化日期
-function formatDate(dateStr?: string) {
+function formatDate(dateStr?: string | Date) {
   if (!dateStr) return '-'
   const d = new Date(dateStr)
   if (Number.isNaN(d.getTime())) return '-'
@@ -256,7 +256,7 @@ function formatDate(dateStr?: string) {
             <!-- 基本信息 -->
             <div class="space-y-2">
               <h3 class="text-xl font-semibold text-gray-800">{{ userForm.nickname }}</h3>
-              <p class="text-gray-600">@{{ authStore.userInfo.username }}</p>
+              <p class="text-gray-600">@{{ authStore.userInfo.auth.username }}</p>
               <NTag :type="statusType" size="small">
                 {{ statusText }}
               </NTag>
@@ -273,8 +273,8 @@ function formatDate(dateStr?: string) {
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600 whitespace-nowrap mr-3">用户ID</span>
                 <!-- 悬浮提示 -->
-                <span class="text-xs text-gray-500 font-mono ellipsis-text" :title="authStore.userInfo.userId">
-                  {{ authStore.userInfo.userId }}
+                <span class="text-xs text-gray-500 font-mono ellipsis-text" :title="authStore.userInfo.id">
+                  {{ authStore.userInfo.id }}
                 </span>
               </div>
             </div>
@@ -286,15 +286,15 @@ function formatDate(dateStr?: string) {
           <div class="space-y-3">
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">最后登录</span>
-              <span class="text-xs text-gray-500">{{ formatDate(authStore.userInfo.lastLoginAt) }}</span>
+              <span class="text-xs text-gray-500">{{ formatDate(authStore.userInfo.auth.lastLoginAt) }}</span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">登录IP</span>
-              <span class="text-xs text-gray-500 font-mono">{{ authStore.userInfo.lastLoginIp || '-' }}</span>
+              <span class="text-xs text-gray-500 font-mono">{{ authStore.userInfo.auth.lastLoginIp || '-' }}</span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-600">失败次数</span>
-              <span class="text-xs text-gray-500">{{ authStore.userInfo.loginAttempts || 0 }}</span>
+              <span class="text-xs text-gray-500">{{ authStore.userInfo.auth.loginAttempts || 0 }}</span>
             </div>
           </div>
         </NCard>

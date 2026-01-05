@@ -59,3 +59,8 @@ interface ImportMeta {
   readonly env: Env.ImportMeta
   glob: import('vite').ImportGlobFunction
 }
+
+// declare module 'virtual:svg-icons-register' {
+//   const svgIconsRegister: import('vite').Plugin
+//   export default svgIconsRegister
+// }
