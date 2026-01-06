@@ -72,6 +72,7 @@ const local: App.I18n.Schema = {
     demos: {
       title: '示例',
       'loading-demo': '加载示例',
+      'updater-demo': '更新示例',
     },
     directives: {
       title: '指令',

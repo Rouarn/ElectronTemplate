@@ -10,11 +10,7 @@ export function createRouteGuard(router: Router) {
     const routeStore = useRouteStore()
 
     // 初始化路由菜单（用于 Header 菜单展示，实际路由基于文件自动生成）
-    if (
-      router.currentRoute.value.path.toLocaleLowerCase() !== `/${RouteNameEnum.LOGIN}` &&
-      authStore.isLogin &&
-      !routeStore.isInitAuthRoute
-    ) {
+    if (to.path.toLocaleLowerCase() !== `/${RouteNameEnum.LOGIN}` && authStore.isLogin && !routeStore.isInitAuthRoute) {
       await routeStore.initAuthRoute()
 
       const notFoundRoute: App.Global.RouteKey[] = ['not-found', '404']

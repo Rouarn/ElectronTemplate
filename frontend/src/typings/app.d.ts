@@ -170,6 +170,7 @@ declare namespace App {
         demos: {
           title: string
           'loading-demo': string
+          'updater-demo': string
         }
         directives: {
           title: string

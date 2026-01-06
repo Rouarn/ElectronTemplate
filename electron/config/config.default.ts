@@ -58,6 +58,13 @@ const config: () => AppConfig = () => {
     mainServer: {
       indexPath: '/public/dist/index.html',
     },
+    updater: {
+      force: false, // 是否强制更新
+      options: {
+        provider: 'generic',
+        url: 'http://static.shixian.xyz/static/electron-template/',
+      },
+    },
   }
 }
 

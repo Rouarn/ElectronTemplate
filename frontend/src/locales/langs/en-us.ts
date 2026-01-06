@@ -71,6 +71,7 @@ const local: App.I18n.Schema = {
     demos: {
       title: 'Demos',
       'loading-demo': 'Loading Demo',
+      'updater-demo': 'Updater Demo',
     },
     directives: {
       title: 'Directives',

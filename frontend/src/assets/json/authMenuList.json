@@ -30,6 +30,21 @@
             "isAuth": false,
             "menuType": 2
           }
+        },
+        {
+          "name": "demos-updater-demo",
+          "path": "/demos/updater-demo",
+          "component": "/demos/updater-demo/index",
+          "meta": {
+            "title": "Updater Demo",
+            "i18nKey": "route.demos.updater-demo",
+            "icon": "",
+            "order": 3,
+            "hideInMenu": false,
+            "isKeepAlive": true,
+            "isAuth": false,
+            "menuType": 2
+          }
         }
       ]
     },
