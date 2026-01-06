@@ -13,7 +13,11 @@ class AppUpdaterService {
     windows: boolean
     macOS: boolean
     linux: boolean
-    options: any
+    options: {
+      provider: string
+      url: string
+      [key: string]: unknown
+    }
     force: boolean
     autoDownload: boolean
   }
