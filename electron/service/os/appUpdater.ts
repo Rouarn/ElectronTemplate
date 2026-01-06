@@ -14,9 +14,8 @@ class AppUpdaterService {
     macOS: boolean
     linux: boolean
     options: {
-      provider: string
+      provider: 'generic'
       url: string
-      [key: string]: unknown
     }
     force: boolean
     autoDownload: boolean
