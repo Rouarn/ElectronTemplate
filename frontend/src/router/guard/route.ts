@@ -33,7 +33,7 @@ export function createRouteGuard(router: Router) {
       }
     }
 
-    if (to.path.toLocaleLowerCase() !== `/${RouteNameEnum.LOGIN}` && authStore.isLogin) {
+    if (to.path.toLocaleLowerCase() !== `/${RouteNameEnum.LOGIN}` && authStore.isLogin && !authStore.isUserInfoFetched) {
       // 获取用户信息
       const success = await authStore.getUserInfo()
       if (!success) {
