@@ -74,7 +74,6 @@ declare namespace Api {
 
     interface UserInfo {
       id: string
-      username: string
       nickname?: string
       avatar?: string
       gender?: Common.Gender
@@ -86,14 +85,12 @@ declare namespace Api {
       profession?: string
       roles?: Role[]
       authId?: string
-      lastLoginAt?: string
-      lastLoginIp?: string
-      loginAttempts?: number
       status?: Common.EnableStatus
       auth: AuthType
     }
 
     interface RegisterUser extends Omit<UserInfo, 'id' | 'status' | 'roles' | 'auth'> {
+      username: string
       password: string
       captchaCode: string
       captchaToken: string

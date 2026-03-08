@@ -32,7 +32,6 @@ interface AuthStoreActions {
   setTokenType(value: string): void
   setRefreshToken(value: string): void
   setUserInfo(value?: Api.Auth.UserInfo): void
-  resetAuthStore(): void
   resetStore(): Promise<void>
   login(username: string, password: string, redirect?: boolean): Promise<void>
   getUserInfo(): Promise<boolean>
@@ -45,7 +44,6 @@ const initialState: AuthInitialState = {
   tokenType: 'Bearer',
   refreshToken: '',
   userInfo: {
-    username: '',
     id: '',
     nickname: '',
     avatar: '',
@@ -57,9 +55,6 @@ const initialState: AuthInitialState = {
     city: '',
     profession: '',
     roles: [],
-    lastLoginAt: '',
-    lastLoginIp: '',
-    loginAttempts: 0,
     auth: {
       createTime: new Date(),
       updateTime: new Date(),
@@ -142,15 +137,22 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, (): AuthStore => {
    * 获取用户信息
    */
   async function getUserInfo() {
-    const { data, error } = await fetchUserInfo()
-    if (error) {
+    try {
+      const { data, error } = await fetchUserInfo()
+      if (error) {
+        routeStore.resetStore()
+        resetAuthStore()
+        return false
+      }
+      setUserInfo(data)
+      setIsUserInfoFetched(true)
+      return true
+    } catch (error) {
+      console.error('[auth.getUserInfo] 获取用户信息异常:', error)
       routeStore.resetStore()
       resetAuthStore()
       return false
     }
-    setUserInfo(data)
-    setIsUserInfoFetched(true)
-    return true
   }
 
   /**
@@ -170,7 +172,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, (): AuthStore => {
 
     window.$notification?.success({
       title: '登录成功',
-      content: `欢迎回来：${userInfo.nickname || userInfo.username || userInfo.mobile || userInfo.email}`,
+      content: `欢迎回来：${userInfo.nickname || userInfo.mobile || userInfo.email}`,
       duration: 4500,
     })
   }
@@ -189,6 +191,5 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, (): AuthStore => {
     getUserInfo,
     setUserInfo,
     resetStore,
-    resetAuthStore,
   }
 })

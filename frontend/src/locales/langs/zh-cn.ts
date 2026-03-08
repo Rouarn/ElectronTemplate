@@ -14,6 +14,9 @@ const local: App.I18n.Schema = {
     logoutConfirm: '确认退出登录吗？',
     tip: '提示',
     backToHome: '返回首页',
+    noPermission: '抱歉，您没有权限访问该页面',
+    notFound: '抱歉，您访问的页面不存在',
+    serviceError: '抱歉，服务器出错了',
     userCenter: '个人中心',
     yesOrNo: { yes: '是', no: '否' },
     search: '搜索',
@@ -72,7 +75,6 @@ const local: App.I18n.Schema = {
     demos: {
       title: '示例',
       'loading-demo': '加载示例',
-      'updater-demo': '更新示例',
     },
     directives: {
       title: '指令',

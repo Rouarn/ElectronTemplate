@@ -115,6 +115,9 @@ declare namespace App {
       }
       common: {
         backToHome: string
+        noPermission: string
+        notFound: string
+        serviceError: string
         cancel: string
         config: string
         confirm: string
@@ -170,7 +173,6 @@ declare namespace App {
         demos: {
           title: string
           'loading-demo': string
-          'updater-demo': string
         }
         directives: {
           title: string
