@@ -1,5 +1,9 @@
 # Electron-template
 
+<p align="center">
+  <img src="frontend/public/intro.svg" alt="Electron Template Intro" width="300" height="155">
+</p>
+
 ## 项目概述
 
 `Electron-template` 是一个基于 Vue 3 和 Vite 的前端 electron 开发模板，旨在帮助开发者快速启动现代化的前端项目。该模板提供了完整的开发环境配置、类型检查支持以及代码质量工具，简化了项目初始化流程。
