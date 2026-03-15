@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, reactive, ref } from 'vue'
 import CroppingImage from '@/components/custom/cropping-image.vue'
+import chinaCitys from '@/assets/json/china-citys.json'
 import { changePassword, updateUserInfo, uploadAvatar } from '@/service/api'
 import { useAuthStore } from '@/stores/modules/auth'
 import type { FormInst, FormRules } from 'naive-ui'
@@ -51,6 +52,20 @@ const genderOptions = [
   { label: '女性', value: 1 },
   { label: '保密', value: 2 },
 ] as const
+
+// 城市选项
+const cityOptions = chinaCitys.map((p) => ({
+  label: p.province,
+  value: p.province,
+  children: p.citys.map((c) => ({
+    label: c.city,
+    value: `${p.province}/${c.city}`,
+    children: c.areas.map((a) => ({
+      label: a.area,
+      value: `${p.province}/${c.city}/${a.area}`,
+    })),
+  })),
+}))
 
 // 表单验证规则
 const rules: FormRules = {
@@ -197,11 +212,11 @@ async function onCropDone(payload: { blob?: Blob; fileName?: string }) {
   userForm.avatar = URL.createObjectURL(payload.blob)
   try {
     const res = await uploadAvatar(file)
-    if (res.data && res.data.downloadUrl) {
-      userForm.avatar = res.data.downloadUrl
+    if (res.data && res.data.completeUrl) {
+      userForm.avatar = res.data.completeUrl
       authStore.setUserInfo({
         ...authStore.userInfo,
-        avatar: res.data.downloadUrl,
+        avatar: res.data.completeUrl,
       })
       window.$message?.success('头像上传成功')
     }
@@ -238,7 +253,8 @@ function formatDate(dateStr?: string | Date) {
                 <NAvatar
                   :size="100"
                   round
-                  :src="userForm.avatar || ''"
+                  object-fit="cover"
+                  :src="userForm.avatar || 'http://static.shixian.xyz/photo'"
                   fallback-src=""
                   class="shadow-high ring-4 ring-white dark:ring-slate-800 transition-transform duration-500 group-hover:scale-105"
                 />
@@ -367,7 +383,15 @@ function formatDate(dateStr?: string | Date) {
                 </NFormItem>
 
                 <NFormItem label="现居城市" path="city">
-                  <NInput v-model:value="userForm.city" placeholder="你所在的城市" class="rd-8px" />
+                  <NCascader
+                    v-model:value="userForm.city"
+                    :options="cityOptions"
+                    check-strategy="child"
+                    placeholder="请选择城市"
+                    class="rd-8px"
+                    clearable
+                    filterable
+                  />
                 </NFormItem>
 
                 <NFormItem label="个人简介" path="bio" class="md:col-span-2">
