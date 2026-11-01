@@ -35,3 +35,13 @@ data/
 public/electron/
 pnpm-lock.yaml
 !frontend/pnpm-workspace.yaml
+
+# 本地环境变量与证书
+.env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+*.key
+*.pem
