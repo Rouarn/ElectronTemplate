@@ -55,6 +55,18 @@ export function createMainWindow(): BrowserWindow {
   mainWindow = win
   trackWindow(win)
 
+  // 渲染进程控制台与加载失败只记 debug/错误日志，便于排查白屏而不污染正常输出
+  win.webContents.on('console-message', (details) => {
+    logger.debug('renderer', details.message, {
+      level: details.level,
+      line: details.lineNumber,
+      source: details.sourceId,
+    })
+  })
+  win.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+    logger.error('window', '渲染页面加载失败', { errorCode, errorDescription, validatedURL, isMainFrame })
+  })
+
   win.once('ready-to-show', () => {
     if (shouldStartMaximized()) win.maximize()
     win.show()

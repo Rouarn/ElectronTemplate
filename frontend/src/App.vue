@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { darkTheme, dateEnUS, dateZhCN, enUS as naiveEnUS, zhCN as naiveZhCN } from 'naive-ui'
+import {
+  darkTheme,
+  dateEnUS,
+  dateZhCN,
+  enUS as naiveEnUS,
+  NConfigProvider,
+  NDialogProvider,
+  NGlobalStyle,
+  NMessageProvider,
+  zhCN as naiveZhCN,
+} from 'naive-ui'
 import { useAppStore } from '@/stores/app'
 import { naiveThemeOverrides } from '@/styles/naive-theme'
 

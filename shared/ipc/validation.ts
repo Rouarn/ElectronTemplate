@@ -1,4 +1,4 @@
-import type { FileFilter, OpenExternalPayload, OpenFileOptions, SaveFileOptions, ThemeMode } from './contracts'
+import type { FileFilter, OpenExternalPayload, OpenFileOptions, RendererErrorPayload, SaveFileOptions, ThemeMode } from './contracts'
 import { IPC_ERROR_CODES } from './result'
 
 /**
@@ -36,8 +36,13 @@ function readRequiredString(input: unknown, field: string, maxLength: number): s
 }
 
 function readOptionalString(input: unknown, field: string, maxLength: number): string | undefined {
-  if (input === undefined) return undefined
-  return readRequiredString(input, field, maxLength)
+  if (input === undefined || input === null) return undefined
+  if (typeof input !== 'string') throw new IpcValidationError(`${field} 必须是字符串`)
+  const value = input.trim()
+  // 可选字段的空字符串按「未提供」处理，避免可选信息缺失导致整条上报被拒绝
+  if (!value) return undefined
+  if (value.length > maxLength) throw new IpcValidationError(`${field} 长度不能超过 ${maxLength}`)
+  return value
 }
 
 function readFilters(input: unknown): FileFilter[] | undefined {
@@ -87,6 +92,21 @@ export function assertThemePayload(input: unknown): ThemeMode {
     throw new IpcValidationError('theme 只能是 system、light 或 dark')
   }
   return theme
+}
+
+/** 校验渲染层异常上报参数，限制长度避免日志被超大堆栈刷爆 */
+export function assertRendererErrorPayload(input: unknown): RendererErrorPayload {
+  const record = asRecord(input, '渲染层异常参数')
+  const kind = record.kind
+  if (kind !== 'vue' && kind !== 'error' && kind !== 'unhandledrejection') {
+    throw new IpcValidationError('kind 只能是 vue、error 或 unhandledrejection')
+  }
+  return {
+    kind,
+    message: readRequiredString(record.message, 'message', 2000),
+    stack: readOptionalString(record.stack, 'stack', 6000),
+    source: readOptionalString(record.source, 'source', 2048),
+  }
 }
 
 /** 校验打开文件对话框参数 */

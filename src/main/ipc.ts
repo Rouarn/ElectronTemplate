@@ -3,6 +3,7 @@ import { app, BrowserWindow, dialog, ipcMain, nativeTheme, type IpcMainInvokeEve
 import {
   assertOpenExternalPayload,
   assertOpenFileOptions,
+  assertRendererErrorPayload,
   assertSaveFileOptions,
   assertThemePayload,
   IPC_CHANNELS,
@@ -83,6 +84,17 @@ const registry: HandlerRegistry = {
     parse: noPayload,
     handle: (): void => {
       app.quit()
+    },
+  },
+  [IPC_CHANNELS.appReportError]: {
+    parse: assertRendererErrorPayload,
+    handle: (payload, event): void => {
+      // 渲染层异常统一落到主进程日志，避免只在 devtools 里可见
+      logger.error('renderer', `渲染层异常（${payload.kind}）：${payload.message}`, {
+        stack: payload.stack ?? '',
+        source: payload.source ?? '',
+        page: event.sender.getURL(),
+      })
     },
   },
   [IPC_CHANNELS.windowMinimize]: {

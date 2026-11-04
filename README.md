@@ -80,6 +80,12 @@ pnpm dist:win         # Windows NSIS 安装包
 pnpm dist:linux       # Linux AppImage + deb
 ```
 
+## 渲染路由与白屏排查
+
+- 渲染进程使用 hash 路由（入口 `app://bundle/index.html#/`，页面为 `#/ipc`、`#/settings`）。`app://` 协议处理器对未命中的无扩展名路径回退 `index.html`，因此深链与打包后启动都不会白屏。
+- Naive UI 组件按需显式导入（项目未启用组件自动导入插件），`App.vue` 中的各 Provider 必须保留导入，否则页面里的 `useMessage` / `useDialog` 会在 setup 阶段抛错并导致整页空白。
+- 渲染层的 Vue `errorHandler`、`window.error` 与 `unhandledrejection` 会经 `app:report-error` 上报到主进程日志；开发态同时在右下角显示红色错误浮层，不再静默白屏。
+
 ## IPC 契约设计
 
 1. **通道唯一来源**：所有 `invoke` 通道与推送事件都定义在 [channels.ts](shared/ipc/channels.ts)，主进程注册、preload 白名单、渲染层调用全部引用常量，代码中不存在手写通道字符串。

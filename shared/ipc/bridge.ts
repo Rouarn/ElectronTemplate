@@ -5,6 +5,7 @@ import type {
   OpenFileOptions,
   OpenFileResult,
   OpenExternalPayload,
+  RendererErrorPayload,
   SaveFileOptions,
   SaveFileResult,
   SystemInfo,
@@ -31,6 +32,8 @@ export interface DesktopBridge {
     getPaths(): Promise<AppPaths>
     openExternal(payload: OpenExternalPayload): Promise<void>
     quit(): Promise<void>
+    /** 上报渲染层异常，由主进程统一写入日志，避免异常被静默吞掉 */
+    reportError(payload: RendererErrorPayload): Promise<void>
   }
 
   readonly window: {

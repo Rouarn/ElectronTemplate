@@ -11,6 +11,7 @@ export const IPC_CHANNELS = {
   appPaths: 'app:paths',
   appOpenExternal: 'app:open-external',
   appQuit: 'app:quit',
+  appReportError: 'app:report-error',
   windowMinimize: 'window:minimize',
   windowToggleMaximize: 'window:toggle-maximize',
   windowClose: 'window:close',

@@ -65,6 +65,10 @@ export function createMockBridge(): DesktopBridge {
       quit: async () => {
         throw new BridgeError({ code: IPC_ERROR_CODES.unsupported, message: '浏览器环境不支持退出应用' })
       },
+      reportError: async (payload) => {
+        // 浏览器预览没有主进程日志，直接输出到控制台
+        console.error('[renderer:error]', payload)
+      },
     },
 
     window: {

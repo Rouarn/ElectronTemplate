@@ -47,6 +47,17 @@ export interface OpenExternalPayload {
   url: string
 }
 
+/** 渲染层异常来源：Vue 组件异常 / window.error / 未处理的 Promise 拒绝 */
+export type RendererErrorKind = 'vue' | 'error' | 'unhandledrejection'
+
+/** 渲染层异常上报载荷，由主进程统一写入日志 */
+export interface RendererErrorPayload {
+  kind: RendererErrorKind
+  message: string
+  stack?: string
+  source?: string
+}
+
 /** 文件选择器过滤器 */
 export interface FileFilter {
   name: string
@@ -100,6 +111,7 @@ export interface IpcRequestMap {
   [IPC_CHANNELS.appPaths]: undefined
   [IPC_CHANNELS.appOpenExternal]: OpenExternalPayload
   [IPC_CHANNELS.appQuit]: undefined
+  [IPC_CHANNELS.appReportError]: RendererErrorPayload
   [IPC_CHANNELS.windowMinimize]: undefined
   [IPC_CHANNELS.windowToggleMaximize]: undefined
   [IPC_CHANNELS.windowClose]: undefined
@@ -119,6 +131,7 @@ export interface IpcResponseMap {
   [IPC_CHANNELS.appPaths]: AppPaths
   [IPC_CHANNELS.appOpenExternal]: void
   [IPC_CHANNELS.appQuit]: void
+  [IPC_CHANNELS.appReportError]: void
   [IPC_CHANNELS.windowMinimize]: void
   [IPC_CHANNELS.windowToggleMaximize]: boolean
   [IPC_CHANNELS.windowClose]: void

@@ -73,6 +73,7 @@ const bridge: DesktopBridge = {
     getPaths: () => invoke(IPC_CHANNELS.appPaths, undefined),
     openExternal: (payload) => invoke(IPC_CHANNELS.appOpenExternal, payload),
     quit: () => invoke(IPC_CHANNELS.appQuit, undefined),
+    reportError: (payload) => invoke(IPC_CHANNELS.appReportError, payload),
   },
   window: {
     minimize: () => invoke(IPC_CHANNELS.windowMinimize, undefined),
