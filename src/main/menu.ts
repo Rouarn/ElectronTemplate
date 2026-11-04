@@ -4,7 +4,7 @@ import { openExternalSafely } from './security'
 import { DEVTOOLS_ALLOWED } from './settings'
 import { emitToRenderer } from './window'
 
-const PROJECT_HOMEPAGE = 'https://github.com/Rouarn/Electron-template'
+const PROJECT_HOMEPAGE = 'https://github.com/Rouarn/ElectronTemplate'
 
 function sendCommand(command: MenuCommand): void {
   emitToRenderer(IPC_EVENTS.menuCommand, command)

@@ -126,7 +126,7 @@ function clearHistory(): void {
         <NButton
           size="small"
           :disabled="busy"
-          @click="run(t('ipc.openHomepage'), () => bridge.app.openExternal({ url: 'https://github.com/Rouarn/Electron-template' }))"
+          @click="run(t('ipc.openHomepage'), () => bridge.app.openExternal({ url: 'https://github.com/Rouarn/ElectronTemplate' }))"
         >
           {{ t('ipc.openHomepage') }}
         </NButton>
@@ -142,7 +142,7 @@ function clearHistory(): void {
     <section class="app-card px-6 py-5">
       <div class="flex items-center justify-between mb-4">
         <h2 class="app-title text-[15px]">{{ t('ipc.history') }}</h2>
-        <NButton size="tiny" quaternary :disabled="!history.length" @click="clearHistory">{{ t('ipc.clearHistory') }}</NButton>
+        <NButton size="tiny" quaternary :disabled="!history.length" @click="clearHistory">{{ t('ipc.clearHistory') }} </NButton>
       </div>
       <p v-if="!history.length" class="app-muted text-[13px]">{{ t('common.empty') }}</p>
       <ul v-else class="flex flex-col gap-2">
