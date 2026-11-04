@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "description": "Electron + Vue 3.5 + Vite+ 的桌面应用模板，主进程与渲染进程共享同一份类型化 IPC 契约。",
+  "homepage": "https://github.com/Rouarn/ElectronTemplate",
   "license": "UNLICENSED",
   "author": {
     "name": "woyuxiaji",
     "email": "woyuxiaji@foxmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rouarn/ElectronTemplate.git"
   },
   "type": "module",
   "main": "dist-electron/main/index.cjs",
@@ -23,10 +28,11 @@
     "format": "vp fmt",
     "format:check": "vp fmt --check",
     "check": "vp check",
-    "pack": "pnpm run build && electron-builder --dir",
-    "dist:mac": "pnpm run build && electron-builder --mac",
-    "dist:win": "pnpm run build && electron-builder --win",
-    "dist:linux": "pnpm run build && electron-builder --linux",
+    "pack": "pnpm run build && electron-builder --config electron-builder.config.cjs --dir",
+    "dist:mac": "pnpm run build && electron-builder --config electron-builder.config.cjs --mac --x64 --arm64",
+    "dist:win": "pnpm run build && electron-builder --config electron-builder.config.cjs --win --x64",
+    "dist:linux": "pnpm run build && electron-builder --config electron-builder.config.cjs --linux --x64",
+    "dist:linux:arm64": "pnpm run build && electron-builder --config electron-builder.config.cjs --linux --arm64",
     "prepare": "husky"
   },
   "dependencies": {
@@ -47,5 +53,6 @@
     "node": ">=22.18.0",
     "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@12.16.1"
+  "packageManager": "pnpm@12.16.1",
+  "desktopName": "ElectronTemplate.desktop"
 }

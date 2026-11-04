@@ -58,7 +58,7 @@ electron-template/
 │   ├── logger.ts               # 分级日志 + 脱敏 + 轮转
 │   └── crash.ts                # 主/渲染进程异常兜底
 ├── src/preload/index.ts        # contextBridge 暴露最小能力集
-├── electron-builder.yml        # 打包唯一配置源
+├── electron-builder.config.cjs  # 打包唯一配置源（JS 配置，便于读取镜像环境变量）
 └── pnpm-workspace.yaml         # workspace + 构建脚本白名单
 ```
 
@@ -75,9 +75,10 @@ pnpm format:check     # 仅检查格式
 pnpm build            # 类型检查 + 渲染产物 + 主进程产物（生产模式）
 pnpm start            # 构建后直接运行 Electron
 pnpm pack             # 生成未压缩的应用目录（release/）
-pnpm dist:mac         # macOS dmg
-pnpm dist:win         # Windows NSIS 安装包
-pnpm dist:linux       # Linux AppImage + deb
+pnpm dist:mac         # macOS dmg（x64 + arm64）
+pnpm dist:win         # Windows NSIS 安装包（x64）
+pnpm dist:linux       # Linux AppImage + deb（x64）
+pnpm dist:linux:arm64 # Linux AppImage + deb（arm64）
 ```
 
 ## 渲染路由与白屏排查
@@ -116,10 +117,33 @@ pnpm dist:linux       # Linux AppImage + deb
 
 ## 打包
 
-- 单一配置源：根目录 [electron-builder.yml](electron-builder.yml)，`appId` 与 `app.setAppUserModelId` 保持一致（`com.rouarn.electronTemplate`）。
-- 产物输出到 `release/`，不污染源码目录；`files` 只包含 `dist-electron/`、`frontend/dist/` 与 `package.json`。
+- 单一配置源：根目录 [electron-builder.config.cjs](electron-builder.config.cjs)，所有打包脚本通过 `--config electron-builder.config.cjs` 指向它；`appId` 与 `app.setAppUserModelId` 保持一致（`com.rouarn.electronTemplate`）。
+- 产物统一命名为 `${productName}-${version}-${os}-${arch}.${ext}`，输出到 `release/`（已在 `.gitignore` 中，不会被误提交）；`files` 只包含 `dist-electron/`、`frontend/dist/` 与 `package.json`。
 - 图标：mac 使用 `icon.icns`，Windows 使用 `icon.ico`，Linux 使用 `512x512.png`。
 - mac 开启 `hardenedRuntime` 并引用 `build/entitlements.mac.plist`；正式发布前需替换签名证书与公证信息。
+
+### 各平台架构与产物
+
+| 命令                    | 架构        | 产物（`release/` 下）                                                        |
+| ----------------------- | ----------- | ---------------------------------------------------------------------------- |
+| `pnpm dist:mac`         | x64 + arm64 | `ElectronTemplate-1.0.0-mac-x64.dmg`、`ElectronTemplate-1.0.0-mac-arm64.dmg` |
+| `pnpm dist:win`         | x64         | `ElectronTemplate-1.0.0-win-x64.exe`（NSIS）                                 |
+| `pnpm dist:linux`       | x64         | `ElectronTemplate-1.0.0-linux-x86_64.AppImage`、`...-linux-amd64.deb`        |
+| `pnpm dist:linux:arm64` | arm64       | `ElectronTemplate-1.0.0-linux-arm64.AppImage`、`...-linux-arm64.deb`         |
+
+架构只在 scripts 的 `--x64 / --arm64` 里决定，配置文件不再写 `target.arch` 列表，避免两处配置互相覆盖（`--x64` 会被配置里的 arch 列表顶掉）。
+
+交叉编译限制：dmg 只能在 macOS 上打；Windows NSIS 与 Linux AppImage/deb 可在 macOS 上交叉打包（前者不需要 wine，后者依赖 electron-builder 自带的 fpm/linux-tools），但 snap、flatpak 以及需要签名/公证的场景仍建议在目标平台或官方 Docker 镜像中构建。
+
+### Electron 二进制镜像（国内网络必需）
+
+- electron-builder 26 打包阶段只认配置里的 `electronDownload.mirror`，不会因为 `.npmrc` 写了 `electron_mirror` 就自动切换；因此镜像被写进 [electron-builder.config.cjs](electron-builder.config.cjs) 的 `electronDownload.mirror`。
+- 镜像优先级：`ELECTRON_MIRROR` → `.npmrc` 的 `electron_mirror` → `ELECTRON_BUILDER_BINARIES_MIRROR` → 默认 `https://npmmirror.com/mirrors/electron/`。`ELECTRON_MIRROR` 同时被安装阶段（`@electron/get`）和打包阶段（配置）读取，是最省事的统一覆盖方式。
+- 注意 `ELECTRON_BUILDER_BINARIES_MIRROR` 通常指向 electron-builder-binaries 目录，只在明确指向 Electron 镜像根目录时才可用作兜底。
+- 依赖安装阶段 Electron 的 postinstall 走 `.npmrc` 的 `electron_mirror`；pnpm 不会把 `.npmrc` 项导出给 `pnpm run` 脚本（实测 pnpm 12 下 `pnpm run` 内 `npm_config_electron_mirror` 为空），所以打包阶段的默认值在配置里显式写死为同一个地址，两处保持一致。
+
+### 自动更新
+
 - 自动更新源在 `publish.url` 中配置为占位 HTTPS 地址，发布前请替换；也可用 `APP_UPDATE_FEED_URL` 环境变量覆盖。
 
 ## 提交规范
@@ -130,5 +154,6 @@ pnpm dist:linux       # Linux AppImage + deb
 ## 已知未验证项
 
 - 未做 GUI 视觉走查：窗口布局、主题切换、图标渲染仅通过构建与启动日志验证，未做人工像素级检查。
-- 未在 Windows / Linux 实机验证安装包与签名流程；mac 仅验证本地启动，未验证公证。
+- Windows NSIS 与 Linux AppImage/deb 均已在 macOS arm64 上真实构建成功并校验了包内元数据，但未在 Windows / Linux 实机安装运行，签名流程也未验证；mac 仅验证本地启动，未验证公证。
+- mac dmg 未在本次改动后重新打包验证（仅改动架构参数传递方式，产物命名规则已对齐）。
 - 自动更新只验证了开发/未配置更新源时的降级路径，未对接真实更新服务器做端到端升级。
