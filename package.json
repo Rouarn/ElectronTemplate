@@ -28,11 +28,12 @@
     "format": "vp fmt",
     "format:check": "vp fmt --check",
     "check": "vp check",
-    "pack": "pnpm run build && electron-builder --config electron-builder.config.cjs --dir",
-    "dist:mac": "pnpm run build && electron-builder --config electron-builder.config.cjs --mac --x64 --arm64",
-    "dist:win": "pnpm run build && electron-builder --config electron-builder.config.cjs --win --x64",
-    "dist:linux": "pnpm run build && electron-builder --config electron-builder.config.cjs --linux --x64",
-    "dist:linux:arm64": "pnpm run build && electron-builder --config electron-builder.config.cjs --linux --arm64",
+    "pack": "pnpm run build && node scripts/dist.mjs --dir",
+    "dist:mac": "pnpm run build && node scripts/dist.mjs --mac --x64 --arm64",
+    "dist:win": "pnpm run build && node scripts/dist.mjs --win --x64",
+    "dist:linux": "pnpm run build && node scripts/dist.mjs --linux --x64",
+    "dist:linux:arm64": "pnpm run build && node scripts/dist.mjs --linux --arm64",
+    "install:cn": "node scripts/install.mjs",
     "prepare": "husky"
   },
   "dependencies": {

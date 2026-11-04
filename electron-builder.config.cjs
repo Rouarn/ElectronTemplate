@@ -5,9 +5,9 @@
 // Electron 二进制默认镜像（与 .npmrc 的 electron_mirror 保持一致）。
 // 镜像优先级：ELECTRON_MIRROR > npm_config_electron_mirror（.npmrc 的 electron_mirror）
 //             > ELECTRON_BUILDER_BINARIES_MIRROR > 默认值。
-// 说明：install 阶段 electron 的 postinstall 由 @electron/get 读取 npm_config_electron_mirror
-//      （来源即 .npmrc 的 electron_mirror）；electron-builder 不解析 .npmrc，
-//      所以这里显式写上同一个默认值，保证「安装依赖」和「打包」两个阶段用同一套源。
+// 说明：electron 45 起 package.json 已没有 postinstall，安装期二进制由 scripts/install.mjs 调 install.js 下载；
+//      electron-builder 不解析 .npmrc，所以这里显式写上同一个默认值，
+//      保证「安装依赖」和「打包」两个阶段用同一套源。
 // 注意：ELECTRON_BUILDER_BINARIES_MIRROR 若被用作兜底，它必须指向 Electron 镜像根目录，
 //      而不是 electron-builder-binaries 目录（.npmrc 里的那个值只适用于打包工具二进制）。
 const DEFAULT_ELECTRON_MIRROR = 'https://npmmirror.com/mirrors/electron/'

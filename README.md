@@ -39,7 +39,9 @@ electron-template/
 │   ├── src/views/              # 首页、IPC 示例、设置、404
 │   ├── uno.config.ts           # UnoCSS（本地图标集合，构建期不联网）
 │   └── vite.config.ts          # 渲染进程构建配置
-├── scripts/                    # 开发编排与主进程构建脚本
+├── scripts/                    # 开发编排、主进程构建与镜像包装脚本
+│   ├── install.mjs             # install:cn：注入镜像后安装依赖并补装 Electron 二进制
+│   └── dist.mjs                # 打包入口：注入镜像环境变量后调用 electron-builder
 ├── shared/ipc/                 # 三端共享的 IPC 契约（唯一来源）
 │   ├── channels.ts             # 通道常量表 + 事件常量表
 │   ├── contracts.ts            # 请求/响应/事件类型映射
@@ -65,7 +67,8 @@ electron-template/
 ## 常用命令
 
 ```sh
-pnpm install          # 安装依赖（会下载 Electron 二进制）
+pnpm install          # 安装依赖（electron 45 起不再自带 postinstall，二进制需单独下载）
+pnpm install:cn       # 国内网络推荐：走 npmmirror 安装依赖并下载 Electron 二进制
 pnpm dev              # 启动 Vite 开发服务并拉起 Electron，主进程改动自动重启
 pnpm dev:renderer     # 仅启动渲染进程，可在普通浏览器中预览（自动走 mock）
 pnpm typecheck        # 主进程 + 渲染进程类型检查
@@ -80,6 +83,18 @@ pnpm dist:win         # Windows NSIS 安装包（x64）
 pnpm dist:linux       # Linux AppImage + deb（x64）
 pnpm dist:linux:arm64 # Linux AppImage + deb（arm64）
 ```
+
+### 安装与镜像（国内网络必看）
+
+| 场景         | 命令                                                                                                                                                | 说明                                                         |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 默认安装     | `pnpm install`                                                                                                                                      | 走 `@electron/get` 默认源（GitHub），国内可能超时            |
+| 国内镜像安装 | `pnpm run install:cn`                                                                                                                               | 一条命令完成依赖安装 + Electron 二进制下载，全部走 npmmirror |
+| 私有源覆盖   | `ELECTRON_MIRROR=https://your-mirror/electron/ ELECTRON_BUILDER_BINARIES_MIRROR=https://your-mirror/electron-builder-binaries/ pnpm run install:cn` | 环境变量优先于 `.npmrc` 与默认值                             |
+
+- `pnpm run install:cn` 由 [scripts/install.mjs](scripts/install.mjs) 实现：先注入 `ELECTRON_MIRROR` / `ELECTRON_BUILDER_BINARIES_MIRROR` 再 spawn `pnpm install`，随后显式执行 `node_modules/electron/install.js`（**electron 45 的 `package.json` 已没有 `postinstall`，只提供 `install-electron` 命令，`pnpm install` 不会自动下载二进制**）。
+- 镜像解析优先级：已有环境变量 > `.npmrc` 的 `electron_mirror` / `electron-builder-binaries_mirror` > 默认 `https://npmmirror.com/mirrors/electron/`。
+- Windows 上脚本通过 `shell` 解析 `pnpm.cmd` / `electron-builder.cmd`，无需 `sh` 语法，命令前缀不依赖 bash。
 
 ## 渲染路由与白屏排查
 
@@ -135,12 +150,13 @@ pnpm dist:linux:arm64 # Linux AppImage + deb（arm64）
 
 交叉编译限制：dmg 只能在 macOS 上打；Windows NSIS 与 Linux AppImage/deb 可在 macOS 上交叉打包（前者不需要 wine，后者依赖 electron-builder 自带的 fpm/linux-tools），但 snap、flatpak 以及需要签名/公证的场景仍建议在目标平台或官方 Docker 镜像中构建。
 
-### Electron 二进制镜像（国内网络必需）
+### 打包镜像（Electron 二进制 + electron-builder 工具二进制）
 
-- electron-builder 26 打包阶段只认配置里的 `electronDownload.mirror`，不会因为 `.npmrc` 写了 `electron_mirror` 就自动切换；因此镜像被写进 [electron-builder.config.cjs](electron-builder.config.cjs) 的 `electronDownload.mirror`。
-- 镜像优先级：`ELECTRON_MIRROR` → `.npmrc` 的 `electron_mirror` → `ELECTRON_BUILDER_BINARIES_MIRROR` → 默认 `https://npmmirror.com/mirrors/electron/`。`ELECTRON_MIRROR` 同时被安装阶段（`@electron/get`）和打包阶段（配置）读取，是最省事的统一覆盖方式。
-- 注意 `ELECTRON_BUILDER_BINARIES_MIRROR` 通常指向 electron-builder-binaries 目录，只在明确指向 Electron 镜像根目录时才可用作兜底。
-- 依赖安装阶段 Electron 的 postinstall 走 `.npmrc` 的 `electron_mirror`；pnpm 不会把 `.npmrc` 项导出给 `pnpm run` 脚本（实测 pnpm 12 下 `pnpm run` 内 `npm_config_electron_mirror` 为空），所以打包阶段的默认值在配置里显式写死为同一个地址，两处保持一致。
+- `pack` / `dist:mac` / `dist:win` / `dist:linux` / `dist:linux:arm64` 全部经 [scripts/dist.mjs](scripts/dist.mjs) 调用 electron-builder：脚本先注入镜像环境变量、统一指定配置文件，再透传参数与退出码。
+- Electron 二进制：electron-builder 26 只读配置里的 `electronDownload.mirror`，不解析 `.npmrc`；配置读取顺序为 `ELECTRON_MIRROR` → `.npmrc` 的 `electron_mirror` → `ELECTRON_BUILDER_BINARIES_MIRROR` → 默认 `https://npmmirror.com/mirrors/electron/`。
+- electron-builder 工具二进制（`nsis` / `nsis-resources` / `appimage` / `linux-tools` / `fpm` / `7zip`）：electron-builder 只读 `ELECTRON_BUILDER_BINARIES_MIRROR`，由 `scripts/dist.mjs` 注入，取值为环境变量 > `.npmrc` 的 `electron-builder-binaries_mirror` > 默认 `https://npmmirror.com/mirrors/electron-builder-binaries/`。
+- `ELECTRON_BUILDER_BINARIES_MIRROR` 必须指向 electron-builder-binaries 镜像根目录（形如 `.../electron-builder-binaries/`），不要填成 Electron 的镜像地址。
+- 注意：pnpm 12 不会把 `.npmrc` 项导出给 `pnpm run` 脚本（实测 `pnpm run` 内 `npm_config_electron_mirror` 为空），因此镜像注入统一放在上述两个 Node 脚本里，而不是依赖 shell 变量前缀。
 
 ### 自动更新
 
