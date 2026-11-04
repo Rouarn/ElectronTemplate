@@ -21,8 +21,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
-    strictPort: true,
+    // 端口与 strictPort 由 scripts/dev.mjs 在启动时探测后通过 CLI 传入，避免写死端口
     // 允许读取仓库根目录的 shared 契约
     fs: {
       allow: [path.resolve(currentDir, '..')],

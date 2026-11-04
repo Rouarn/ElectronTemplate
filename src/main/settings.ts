@@ -6,8 +6,8 @@ export const APP_SCHEME = 'app'
 export const APP_SCHEME_HOST = 'bundle'
 export const APP_ORIGIN = `${APP_SCHEME}://${APP_SCHEME_HOST}`
 
-/** 开发环境由 scripts/dev.mjs 注入渲染进程地址 */
-export const RENDERER_DEV_URL = process.env.ELECTRON_RENDERER_URL ?? null
+/** 开发环境由 scripts/dev.mjs 注入实际渲染进程地址（端口由脚本探测，不写死） */
+export const RENDERER_DEV_URL = process.env.DEV_SERVER_URL ?? null
 export const IS_DEV = RENDERER_DEV_URL !== null
 
 /** 允许开启开发者工具的条件：开发环境，或显式设置环境变量 */

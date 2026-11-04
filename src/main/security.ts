@@ -1,6 +1,6 @@
 import { shell, type Session, type WebContents } from 'electron'
 import { logger } from './logger'
-import { getAllowedOrigins, IS_DEV, isAllowedNavigation } from './settings'
+import { getAllowedOrigins, IS_DEV, isAllowedNavigation, RENDERER_DEV_URL } from './settings'
 
 /** 生产环境 CSP：禁止内联脚本、禁止 object/embed、禁止被嵌套 */
 const PRODUCTION_CSP = [
@@ -17,20 +17,29 @@ const PRODUCTION_CSP = [
   "frame-ancestors 'none'",
 ].join('; ')
 
-/** 开发环境额外放开 HMR 所需的 websocket 与内联脚本 */
-const DEVELOPMENT_CSP = [
-  "default-src 'none'",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
-  "font-src 'self' data:",
-  "connect-src 'self' ws: http: https:",
-  "media-src 'self'",
-  "object-src 'none'",
-  "base-uri 'none'",
-  "form-action 'none'",
-  "frame-ancestors 'none'",
-].join('; ')
+/**
+ * 开发环境 CSP：脚本与连接来源跟随实际 dev server 端口，
+ * 同时放开 HMR 所需的 websocket 与内联脚本。
+ */
+function buildDevelopmentCsp(devUrl: string): string {
+  const origin = new URL(devUrl).origin
+  const wsOrigin = origin.replace(/^http/, 'ws')
+  return [
+    "default-src 'none'",
+    `script-src 'self' 'unsafe-inline' ${origin}`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    `connect-src 'self' ${origin} ${wsOrigin}`,
+    "media-src 'self'",
+    "object-src 'none'",
+    "base-uri 'none'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+  ].join('; ')
+}
+
+const DEV_CSP = RENDERER_DEV_URL ? buildDevelopmentCsp(RENDERER_DEV_URL) : null
 
 const ALLOWED_EXTERNAL_PROTOCOLS = new Set(['https:', 'http:', 'mailto:'])
 
@@ -77,7 +86,8 @@ export function applySessionSecurity(session: Session): void {
     for (const [key, value] of Object.entries(details.responseHeaders ?? {})) {
       if (value !== undefined) headers[key] = value
     }
-    headers['Content-Security-Policy'] = [IS_DEV ? DEVELOPMENT_CSP : PRODUCTION_CSP]
+    const csp = (IS_DEV && DEV_CSP) || PRODUCTION_CSP
+    headers['Content-Security-Policy'] = [csp]
     headers['X-Content-Type-Options'] = ['nosniff']
     callback({ responseHeaders: headers })
   })
