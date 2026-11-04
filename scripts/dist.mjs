@@ -50,6 +50,11 @@ const child = spawn('electron-builder', ['--config', 'electron-builder.config.cj
   shell: process.platform === 'win32',
 })
 
+child.on('error', (error) => {
+  console.error(`[dist] 启动 electron-builder 失败（请通过 pnpm run dist:* 调用）：${error.message}`)
+  process.exit(1)
+})
+
 child.on('exit', (code, signal) => {
   if (signal) {
     process.kill(process.pid, signal)

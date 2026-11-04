@@ -77,6 +77,11 @@ const child = spawn('pnpm', ['install', ...process.argv.slice(2)], {
   shell: process.platform === 'win32',
 })
 
+child.on('error', (error) => {
+  console.error(`[install] 启动 pnpm 失败：${error.message}`)
+  process.exit(1)
+})
+
 child.on('exit', (code, signal) => {
   if (signal) {
     process.kill(process.pid, signal)
