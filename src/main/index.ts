@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { app, BrowserWindow, session } from 'electron'
 import { registerProcessGuards, watchRendererProcess } from './crash'
 import { registerIpcHandlers } from './ipc'
@@ -39,6 +40,12 @@ function bootstrap(): void {
     .then(() => {
       initLogger()
       logger.info('app', '应用启动', { version: app.getVersion(), packaged: app.isPackaged })
+
+      // 开发模式下打包配置不生效，手动使用正式图标，保持与生产一致的视觉
+      if (!app.isPackaged) {
+        const devIcon = path.join(__dirname, '../../build/icons/icon.png')
+        if (process.platform === 'darwin') app.dock?.setIcon(devIcon)
+      }
       logSecurityBaseline()
 
       applySessionSecurity(session.defaultSession)

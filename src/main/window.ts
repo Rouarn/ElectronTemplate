@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme } from 'electron'
 import { IPC_EVENTS, type IpcEvent, type IpcEventMap } from '@shared/ipc'
 import { logger } from './logger'
 import { APP_ORIGIN, DEVTOOLS_ALLOWED, RENDERER_DEV_URL } from './settings'
@@ -32,6 +32,8 @@ export function createMainWindow(): BrowserWindow {
     minHeight: 640,
     show: false,
     title: 'Electron 桌面模板',
+    // 开发模式下打包图标不生效，Windows/Linux 窗口图标需手动指定（macOS 由 Dock 图标负责）
+    ...(!app.isPackaged && process.platform !== 'darwin' ? { icon: path.join(__dirname, '../../build/icons/icon.png') } : {}),
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#101014' : '#f7f8fa',
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.cjs'),
