@@ -1,0 +1,17 @@
+{
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off",
+    "style": "off"
+  },
+  "rules": {
+    "no-console": "off",
+    "no-var": "error",
+    "prefer-const": "error",
+    "eqeqeq": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/consistent-type-imports": "off"
+  },
+  "ignorePatterns": ["dist/**", "dist-electron/**", "release/**", "frontend/dist/**", "node_modules/**", "**/node_modules/**", "*.min.js"]
+}

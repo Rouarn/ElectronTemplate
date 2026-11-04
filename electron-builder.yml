@@ -1,0 +1,63 @@
+appId: com.rouarn.electronTemplate
+productName: ElectronTemplate
+copyright: © 2026 woyuxiaji Technology Co., Ltd.
+
+directories:
+  output: release
+  buildResources: build
+
+# 只打进运行期真正需要的文件，源码与开发依赖不进包
+files:
+  - dist-electron/**/*
+  - frontend/dist/**/*
+  - package.json
+  - '!**/*.map'
+
+asar: true
+
+mac:
+  icon: build/icons/icon.icns
+  category: public.app-category.utilities
+  darkModeSupport: true
+  # 签名与公证需要真实证书，模板默认开启强化运行时，发布前请替换为你的 Team ID
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+
+win:
+  icon: build/icons/icon.ico
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - arm64
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: ElectronTemplate
+  installerIcon: build/icons/icon.ico
+  uninstallerIcon: build/icons/icon.ico
+
+linux:
+  icon: build/icons/512x512.png
+  category: Utility
+  target:
+    - AppImage
+    - deb
+
+# 自动更新源：请改成你自己的 HTTPS 静态资源地址。
+# 主进程还会读取 APP_UPDATE_FEED_URL 环境变量覆盖此值，并在运行期强制校验 HTTPS。
+publish:
+  provider: generic
+  url: https://updates.example.com/electron-template/

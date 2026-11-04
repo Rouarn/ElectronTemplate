@@ -1,81 +1,51 @@
 {
   "name": "electron-template",
-  "version": "0.0.0",
-  "description": "一个基于Vue3、Vite7、TypeScript、NaiveUI and UnoCSS的清新优雅前台模版。",
-  "main": "./public/electron/main.js",
-  "scripts": {
-    "dev": "ee-bin dev",
-    "build": "npm run build-frontend && npm run build-electron && ee-bin encrypt",
-    "start": "ee-bin start",
-    "dev-frontend": "ee-bin dev --serve=frontend",
-    "dev-electron": "ee-bin dev --serve=electron",
-    "build-frontend": "ee-bin build --cmds=frontend && ee-bin move --flag=frontend_dist",
-    "build-electron": "ee-bin build --cmds=electron",
-    "encrypt": "ee-bin encrypt",
-    "icon": "ee-bin icon",
-    "re-sqlite": "electron-rebuild -f -w better-sqlite3",
-    "build-w": "ee-bin build --cmds=win64",
-    "build-we": "ee-bin build --cmds=win_e",
-    "build-m": "ee-bin build --cmds=mac",
-    "build-m-arm64": "ee-bin build --cmds=mac_arm64",
-    "build-l": "ee-bin build --cmds=linux",
-    "lint:eslint": "eslint . --fix",
-    "lint:prettier": "prettier --write '**/*.{js,ts,vue}'",
-    "prepare": "husky",
-    "lint:lint-staged": "lint-staged",
-    "commit": "cz-git commit"
-  },
-  "repository": "https://github.com/Rouarn/Electron-template",
-  "keywords": [
-    "Electron",
-    "electron-egg",
-    "ElectronEgg"
-  ],
-  "author": "我与夏季, Inc <woyuxiaji@foxmail.com>",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Electron + Vue 3.5 + Vite+ 的桌面应用模板，主进程与渲染进程共享同一份类型化 IPC 契约。",
   "license": "UNLICENSED",
-  "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@electron/rebuild": "^3.7.1",
-    "@types/node": "^20.16.0",
-    "commitizen": "^4.3.1",
-    "cz-git": "^1.12.0",
-    "debug": "^4.4.0",
-    "ee-bin": "^4.1.10",
-    "electron": "^31.7.7",
-    "electron-builder": "^25.1.8",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
-    "prettier": "^3.6.2",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.6.0",
-    "eslint": "^9.30.1",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-vue": "~10.0.1"
+  "author": {
+    "name": "woyuxiaji",
+    "email": "woyuxiaji@foxmail.com"
+  },
+  "type": "module",
+  "main": "dist-electron/main/index.cjs",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:renderer": "pnpm --filter @electron-template/frontend dev",
+    "build": "pnpm run typecheck && pnpm run build:renderer && pnpm run build:electron",
+    "build:renderer": "pnpm --filter @electron-template/frontend build",
+    "build:electron": "node scripts/build-electron.mjs --production",
+    "start": "pnpm run build && electron .",
+    "typecheck": "tsc -p tsconfig.json --noEmit && pnpm --filter @electron-template/frontend typecheck",
+    "lint": "vp lint",
+    "lint:fix": "vp lint --fix",
+    "format": "vp fmt",
+    "format:check": "vp fmt --check",
+    "check": "vp check",
+    "pack": "pnpm run build && electron-builder --dir",
+    "dist:mac": "pnpm run build && electron-builder --mac",
+    "dist:win": "pnpm run build && electron-builder --win",
+    "dist:linux": "pnpm run build && electron-builder --linux",
+    "prepare": "husky"
   },
   "dependencies": {
-    "ee-core": "^4.1.5",
-    "electron-updater": "^6.3.8"
+    "electron-updater": "^6.8.11"
   },
-  "lint-staged": {
-    "frontend/**/*.{js,ts,vue}": [
-      "npx eslint --fix --cache --max-warnings=0",
-      "npx prettier --write --cache"
-    ],
-    "frontend/**/*.{cjs,mjs,json}": [
-      "npx prettier --write --cache"
-    ],
-    "frontend/**/*.{vue,html}": [
-      "npx prettier --write --cache"
-    ],
-    "frontend/**/*.{css,scss,less,sass}": [
-      "npx prettier --write --cache"
-    ],
-    "frontend/**/*.{md,mdx}": [
-      "npx prettier --write --cache"
-    ],
-    "*.{js,ts,json,md}": [
-      "npx prettier --write --cache"
-    ]
-  }
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@types/node": "^24.10.1",
+    "electron": "^45.2.2",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.2",
+    "husky": "^9.1.7",
+    "typescript": "^5.9.3",
+    "vite-plus": "^1.5.0"
+  },
+  "engines": {
+    "node": ">=22.18.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@12.16.1"
 }
