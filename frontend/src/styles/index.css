@@ -1,0 +1,90 @@
+/* 全局设计令牌：明暗模式共用同一套变量名，组件只消费变量 */
+:root {
+  --app-bg: #f4f6fb;
+  --app-bg-soft: #eef1f8;
+  --app-surface: #ffffff;
+  --app-surface-2: #f8fafc;
+  --app-border: rgba(15, 23, 42, 0.08);
+  --app-text: #0f172a;
+  --app-text-2: #5b6577;
+  --app-primary: #4f46e5;
+  --app-primary-soft: rgba(79, 70, 229, 0.12);
+  --app-shadow: 0 18px 40px -26px rgba(15, 23, 42, 0.45);
+  --app-radius: 16px;
+  color-scheme: light;
+}
+
+html.dark {
+  --app-bg: #0b0d12;
+  --app-bg-soft: #0f1219;
+  --app-surface: #151922;
+  --app-surface-2: #10141c;
+  --app-border: rgba(148, 163, 184, 0.16);
+  --app-text: #e6e9f2;
+  --app-text-2: #93a0b4;
+  --app-primary: #818cf8;
+  --app-primary-soft: rgba(129, 140, 248, 0.16);
+  --app-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+a {
+  color: var(--app-primary);
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--app-primary-soft);
+}
+
+/* 细滚动条，贴合桌面端观感 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--app-text-2) 35%, transparent);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+pre,
+code {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.18s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
