@@ -26,3 +26,6 @@ logs
 *.key
 *.pem
 !build/entitlements.mac.plist
+
+# 本地运行时验收产物（截图等，不纳入版本管理）
+.verify/

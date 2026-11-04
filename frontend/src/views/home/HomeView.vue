@@ -77,9 +77,9 @@ function goSettings(): void {
     </section>
 
     <section class="app-card px-6 py-6">
-      <div class="flex items-center justify-between">
-        <h2 class="app-title text-[15px]">{{ t('home.runtime') }}</h2>
-        <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <h2 class="app-title text-[15px] shrink-0">{{ t('home.runtime') }}</h2>
+        <div class="flex flex-wrap items-center gap-2">
           <NTag size="small" :bordered="false" round>{{ t('home.techStack') }}</NTag>
           <span
             v-for="tech in techStack"

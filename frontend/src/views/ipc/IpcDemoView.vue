@@ -133,7 +133,7 @@ function clearHistory(): void {
       </NCard>
 
       <NCard size="small" :title="t('ipc.result')">
-        <pre class="text-[12px] leading-relaxed whitespace-pre-wrap break-all max-h-32 overflow-auto text-[var(--app-text-2)]">{{
+        <pre class="text-[12px] leading-relaxed whitespace-pre-wrap break-all overflow-auto text-[var(--app-text-2)]">{{
           result || t('common.empty')
         }}</pre>
       </NCard>

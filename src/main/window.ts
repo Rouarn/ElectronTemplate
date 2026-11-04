@@ -29,7 +29,7 @@ export function createMainWindow(): BrowserWindow {
     height: bounds.height,
     ...(bounds.x !== undefined && bounds.y !== undefined ? { x: bounds.x, y: bounds.y } : {}),
     minWidth: 960,
-    minHeight: 600,
+    minHeight: 640,
     show: false,
     title: 'Electron 桌面模板',
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#101014' : '#f7f8fa',
