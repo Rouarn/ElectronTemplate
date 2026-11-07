@@ -4,21 +4,21 @@ Electron + Vue 3.5 + Vite+ 组成的桌面应用模板。主进程、preload 与
 
 ## 技术栈（实际安装版本）
 
-| 依赖                 | 版本    | 说明                                                                               |
-| -------------------- | ------- | ---------------------------------------------------------------------------------- |
-| Electron             | 45.2.2  | 主进程运行时                                                                       |
-| electron-builder     | 26.18.0 | 三平台打包                                                                         |
-| electron-updater     | 6.8.11  | 自动更新（HTTPS + 完整性校验）                                                     |
-| Vue                  | 3.5.44  | 渲染进程框架，`<script setup>`                                                     |
-| vue-router           | 5.4.0   | hash 路由，适配 `app://` 协议                                                      |
-| pinia                | 4.1.0   | 状态管理，配合 VueUse 持久化                                                       |
-| vue-i18n             | 11.4.18 | 中文默认，英文语言包                                                               |
-| Naive UI             | 2.45.3  | 组件库，主题与设计令牌统一                                                         |
-| UnoCSS               | 66.12.0 | 原子化样式 + 本地 lucide 图标                                                      |
-| axios                | 1.13.x  | 统一 API 客户端（原 `@vakao-ui/axios` 在 npm 不存在，改为标准 axios 封装等价能力） |
-| Vite+（`vite-plus`） | 1.5.0   | `vp dev/build/lint/fmt/staged` 工具链                                              |
-| TypeScript           | 5.9.3   | 主进程与渲染进程统一严格模式                                                       |
-| pnpm                 | 12.16.1 | 包管理器，`packageManager` 已锁定                                                  |
+| 依赖                 | 版本    | 说明                                                                            |
+| -------------------- | ------- | ------------------------------------------------------------------------------- |
+| Electron             | 45.2.2  | 主进程运行时                                                                    |
+| electron-builder     | 26.18.0 | 三平台打包                                                                      |
+| electron-updater     | 6.8.11  | 自动更新（HTTPS + 完整性校验）                                                  |
+| Vue                  | 3.5.44  | 渲染进程框架，`<script setup>`                                                  |
+| vue-router           | 5.4.0   | hash 路由，适配 `app://` 协议                                                   |
+| pinia                | 4.1.0   | 状态管理，配合 VueUse 持久化                                                    |
+| vue-i18n             | 11.4.18 | 中文默认，英文语言包                                                            |
+| Naive UI             | 2.45.3  | 组件库，主题与设计令牌统一                                                      |
+| UnoCSS               | 66.12.0 | 原子化样式 + 本地 lucide 图标                                                   |
+| axios                | 1.13.x  | 统一 API 客户端（原 `@vakao/axios` 在 npm 不存在，改为标准 axios 封装等价能力） |
+| Vite+（`vite-plus`） | 1.5.0   | `vp dev/build/lint/fmt/staged` 工具链                                           |
+| TypeScript           | 5.9.3   | 主进程与渲染进程统一严格模式                                                    |
+| pnpm                 | 12.16.1 | 包管理器，`packageManager` 已锁定                                               |
 
 > 说明：TypeScript 最新发布版为 7.0.2（原生编译器），但 `vue-tsc 3.3.14` 的 SFC 类型检查链路尚未适配，模板选用 5.9.3 以保证类型检查可用。`vite` 在 `frontend` 中显式别名到 `@voidzero-dev/vite-plus-core@1.5.0`，这是 `vp` 工具链的要求。
 
